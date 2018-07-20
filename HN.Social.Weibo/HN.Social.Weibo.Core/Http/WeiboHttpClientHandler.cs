@@ -28,6 +28,12 @@ namespace HN.Social.Weibo.Http
 
             var response = await base.SendAsync(request, cancellationToken);
 
+            if (response.Content is StreamContent)
+            {
+                var bytes = await response.Content.ReadAsByteArrayAsync();
+                response.Content = new ByteArrayContent(bytes);
+            }
+
             CheckResponseErrorCode(response);
 
             return response;
