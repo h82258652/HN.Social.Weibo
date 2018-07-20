@@ -83,7 +83,7 @@ namespace HN.Social.Weibo.Models
         public string InReplyToScreenName { get; set; }
 
         [JsonProperty("pic_urls")]
-        public object[] PicUrls { get; set; }
+        public PicUrl[] PicUrls { get; set; }
 
         /// <summary>
         /// 地理信息字段
