@@ -23,7 +23,7 @@ IWeiboClient client = new WeiboClientBuilder()
 ```C#
 try
 {
-    await _client.SignInAsync();
+    await client.SignInAsync();
 }
 catch (UserCancelAuthorizationException)
 {
@@ -91,3 +91,4 @@ http://open.weibo.com/wiki/Error_code
 1.封装更多接口  
 2.补充文档注释  
 3.添加 HttpMessageHandler 的注入
+4.制作 nuget 包
