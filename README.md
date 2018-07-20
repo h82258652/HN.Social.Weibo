@@ -1,5 +1,8 @@
 # HN.Social.Weibo
 新浪微博 .net API for Desktop and UWP
+#### 版本要求
+Desktop：.net framework 4.6.1  
+UWP：16299
 
 本文档编写于 **2018 年 7 月 17 日**
 
