@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.IO.IsolatedStorage;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using HN.Social.Weibo.Models;
@@ -10,6 +11,7 @@ namespace HN.Social.Weibo
     public class DesktopAccessTokenStorageService : IAccessTokenStorageService
     {
         private const string AccessTokenStorageFileName = "weibo_accesstoken";
+        private static readonly SemaphoreSlim AsyncLock = new SemaphoreSlim(1);
 
         public Task ClearAsync()
         {
@@ -30,7 +32,7 @@ namespace HN.Social.Weibo
             {
                 if (isolatedStorageFile.FileExists(AccessTokenStorageFileName))
                 {
-                    using (var fileStream = isolatedStorageFile.OpenFile(AccessTokenStorageFileName, FileMode.Open))
+                    using (var fileStream = isolatedStorageFile.OpenFile(AccessTokenStorageFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
                         var memoryStream = new MemoryStream();
                         await fileStream.CopyToAsync(memoryStream);
@@ -55,9 +57,18 @@ namespace HN.Social.Weibo
 
             using (var isolatedStorageFile = GetStore())
             {
-                using (var fileStream = isolatedStorageFile.CreateFile(AccessTokenStorageFileName))
+                try
                 {
-                    await new MemoryStream(protectedData).CopyToAsync(fileStream);
+                    await AsyncLock.WaitAsync();
+
+                    using (var fileStream = isolatedStorageFile.CreateFile(AccessTokenStorageFileName))
+                    {
+                        await new MemoryStream(protectedData).CopyToAsync(fileStream);
+                    }
+                }
+                finally
+                {
+                    AsyncLock.Release();
                 }
             }
         }
