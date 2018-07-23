@@ -24,14 +24,14 @@ namespace HN.Social.Weibo
             return await GetUserInfoAsync(client, userId.Value);
         }
 
-        public static Task<Timeline> GetHomeTimelineAsync(this IWeiboClient client)
+        public static Task<Timeline> GetHomeTimelineAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, int count = 20, int page = 1)
         {
             if (client == null)
             {
                 throw new ArgumentNullException(nameof(client));
             }
 
-            return client.GetAsync<Timeline>($"/statuses/home_timeline.json");
+            return client.GetAsync<Timeline>($"/statuses/home_timeline.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}");
         }
 
         public static Task<UserInfo> GetUserInfoAsync(this IWeiboClient client, long userId)
@@ -69,12 +69,14 @@ namespace HN.Social.Weibo
                 throw new ArgumentNullException(nameof(comment));
             }
 
-            var postData = new Dictionary<string, string>();
-            postData["cid"] = commentId.ToString();
-            postData["id"] = statusId.ToString();
-            postData["comment"] = comment;
-            postData["without_mention"] = withoutMention ? "0" : "1";
-            postData["comment_ori"] = commentOriginStatus ? "1" : "0";
+            var postData = new Dictionary<string, string>
+            {
+                ["cid"] = commentId.ToString(),
+                ["id"] = statusId.ToString(),
+                ["comment"] = comment,
+                ["without_mention"] = withoutMention ? "0" : "1",
+                ["comment_ori"] = commentOriginStatus ? "1" : "0"
+            };
             var postContent = new FormUrlEncodedContent(postData);
             return client.PostAsync<Comment>("/comments/reply.json", postContent);
         }
