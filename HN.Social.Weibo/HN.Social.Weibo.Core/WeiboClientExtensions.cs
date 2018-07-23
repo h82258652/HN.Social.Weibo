@@ -24,6 +24,16 @@ namespace HN.Social.Weibo
             return await GetUserInfoAsync(client, userId.Value);
         }
 
+        public static Task<Timeline> GetHomeTimeline(this IWeiboClient client)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            return client.GetAsync<Timeline>($"/statuses/home_timeline.json");
+        }
+
         public static Task<UserInfo> GetUserInfoAsync(this IWeiboClient client, long userId)
         {
             if (client == null)

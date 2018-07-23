@@ -97,6 +97,9 @@ namespace HN.Social.Weibo.Models
         [JsonProperty("mblog_vip_type")]
         public int MblogVipType { get; set; }
 
+        [JsonProperty("annotations")]
+        public Annotation[] Annotations { get; set; }
+
         /// <summary>
         /// 微博作者的用户信息字段
         /// </summary>
@@ -144,6 +147,9 @@ namespace HN.Social.Weibo.Models
         /// </summary>
         [JsonProperty("visible")]
         public Visible Visible { get; set; }
+
+        [JsonProperty("biz_ids")]
+        public int? BizIds { get; set; }
 
         [JsonProperty("biz_feature")]
         public int BizFeature { get; set; }
