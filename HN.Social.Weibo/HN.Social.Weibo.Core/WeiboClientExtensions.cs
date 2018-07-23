@@ -24,14 +24,18 @@ namespace HN.Social.Weibo
             return await GetUserInfoAsync(client, userId.Value);
         }
 
-        public static Task<Timeline> GetHomeTimelineAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, int count = 20, int page = 1)
+        public static Task<Timeline> GetHomeTimelineAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, int count = 20, int page = 1, bool onlyCurrentApp = false)
         {
+            // TODO 剩余参数
+            // feature
+            // trim_user
+
             if (client == null)
             {
                 throw new ArgumentNullException(nameof(client));
             }
 
-            return client.GetAsync<Timeline>($"/statuses/home_timeline.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}");
+            return client.GetAsync<Timeline>($"/statuses/home_timeline.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&base_app={(onlyCurrentApp ? "1" : "0")}");
         }
 
         public static Task<UserInfo> GetUserInfoAsync(this IWeiboClient client, long userId)
