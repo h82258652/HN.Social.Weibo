@@ -149,10 +149,10 @@ namespace HN.Social.Weibo.Models
         public Visible Visible { get; set; }
 
         [JsonProperty("biz_ids")]
-        public int? BizIds { get; set; }
+        public int[] BizIds { get; set; }
 
         [JsonProperty("biz_feature")]
-        public int BizFeature { get; set; }
+        public long BizFeature { get; set; }
 
         [JsonProperty("hasActionTypeCard")]
         public int HasActionTypeCard { get; set; }
