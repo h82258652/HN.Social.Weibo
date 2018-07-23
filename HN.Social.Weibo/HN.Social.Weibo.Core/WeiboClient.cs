@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using HN.Social.Weibo.Http;
-using HN.Social.Weibo.Models;
 using Microsoft.Extensions.Options;
 
 namespace HN.Social.Weibo
@@ -16,7 +15,7 @@ namespace HN.Social.Weibo
             _signInManager = new SignInManager(weiboOptions, authorizationProvider, accessTokenStorageService);
         }
 
-        public async Task<T> GetAsync<T>(string uri) where T : WeiboResult
+        public async Task<T> GetAsync<T>(string uri)
         {
             if (uri == null)
             {
@@ -41,7 +40,7 @@ namespace HN.Social.Weibo
             return _signInManager.IsSignIn();
         }
 
-        public async Task<T> PostAsync<T>(string uri, HttpContent content) where T : WeiboResult
+        public async Task<T> PostAsync<T>(string uri, HttpContent content)
         {
             if (uri == null)
             {
@@ -59,7 +58,7 @@ namespace HN.Social.Weibo
             }
         }
 
-        public async Task<T> SendAsync<T>(HttpRequestMessage request) where T : WeiboResult
+        public async Task<T> SendAsync<T>(HttpRequestMessage request)
         {
             if (request == null)
             {

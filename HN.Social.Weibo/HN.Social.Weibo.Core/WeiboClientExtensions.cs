@@ -38,6 +38,49 @@ namespace HN.Social.Weibo
             return client.GetAsync<Timeline>($"/statuses/user_timeline.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&base_app={(onlyCurrentApp ? "1" : "0")}");
         }
 
+        public static Task<IReadOnlyList<Emotion>> GetEmotionsAsync(this IWeiboClient client, EmotionType type = EmotionType.Face, EmotionLanguage language = EmotionLanguage.SimplifiedChinese)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+            if (!Enum.IsDefined(typeof(EmotionType), type))
+            {
+                throw new ArgumentOutOfRangeException(nameof(type));
+            }
+            if (!Enum.IsDefined(typeof(EmotionLanguage), language))
+            {
+                throw new ArgumentOutOfRangeException(nameof(language));
+            }
+
+            var url = "/emotions.json";
+            switch (type)
+            {
+                case EmotionType.Face:
+                    url += "?type=face";
+                    break;
+
+                case EmotionType.Animation:
+                    url += "?type=ani";
+                    break;
+
+                case EmotionType.Cartoon:
+                    url += "?type=cartoon";
+                    break;
+            }
+            switch (language)
+            {
+                case EmotionLanguage.SimplifiedChinese:
+                    url += "&language=cnname";
+                    break;
+
+                case EmotionLanguage.TraditionalChinese:
+                    url += "&language=twname";
+                    break;
+            }
+            return client.GetAsync<IReadOnlyList<Emotion>>(url);
+        }
+
         public static Task<Timeline> GetHomeTimelineAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, int count = 20, int page = 1, bool onlyCurrentApp = false)
         {
             // TODO 剩余参数
@@ -50,6 +93,18 @@ namespace HN.Social.Weibo
             }
 
             return client.GetAsync<Timeline>($"/statuses/home_timeline.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&base_app={(onlyCurrentApp ? "1" : "0")}");
+        }
+
+        public static Task<RepostTimeline> GetRepostTimelineAsync(this IWeiboClient client, long statusId, long sinceId = 0, long maxId = 0, int count = 20, int page = 1)
+        {
+            // TODO filter_by_author
+
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            return client.GetAsync<RepostTimeline>($"/statuses/repost_timeline.json?id={statusId}&since_id={sinceId}&max_id={maxId}&count={count}&page={page}");
         }
 
         public static Task<UserInfo> GetUserInfoAsync(this IWeiboClient client, long userId)
