@@ -12,6 +12,48 @@ namespace HN.Social.Weibo
 {
     public static class WeiboClientExtensions
     {
+        public static async Task<IReadOnlyList<District>> GetCityListAsync(this IWeiboClient client, string provinceCode, char? firstLetter = null, DistrictLanguage language = DistrictLanguage.SimplifiedChinese)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+            if (provinceCode == null)
+            {
+                throw new ArgumentNullException(nameof(provinceCode));
+            }
+
+            var url = $"/common/get_city.json?province={provinceCode}";
+            if (firstLetter.HasValue)
+            {
+                url += $"&capital={firstLetter.Value.ToString()}";
+            }
+            switch (language)
+            {
+                case DistrictLanguage.SimplifiedChinese:
+                    url += "&language=zh-cn";
+                    break;
+
+                case DistrictLanguage.TraditionalChinese:
+                    url += "&language=zh-tw";
+                    break;
+
+                case DistrictLanguage.English:
+                    url += "&language=english";
+                    break;
+            }
+
+            var result = await client.GetAsync<IEnumerable<JObject>>(url);
+            return result
+                .Select(item => (JProperty)item.First)
+                .Select(property => new District()
+                {
+                    Code = property.Name,
+                    Name = property.Value.ToObject<string>()
+                })
+                .ToList();
+        }
+
         public static async Task<IReadOnlyList<District>> GetCountryListAsync(this IWeiboClient client, char? firstLetter = null, DistrictLanguage language = DistrictLanguage.SimplifiedChinese)
         {
             if (client == null)
@@ -39,6 +81,7 @@ namespace HN.Social.Weibo
                     break;
             }
             var url = "/common/get_country.json" + queryString.ToUriComponent();
+
             var result = await client.GetAsync<IEnumerable<JObject>>(url);
             return result
                 .Select(item => (JProperty)item.First)
@@ -143,6 +186,48 @@ namespace HN.Social.Weibo
             return client.GetAsync<Timeline>($"/statuses/home_timeline.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&base_app={(onlyCurrentApp ? "1" : "0")}");
         }
 
+        public static async Task<IReadOnlyList<District>> GetProvinceListAsync(this IWeiboClient client, string countryCode, char? firstLetter = null, DistrictLanguage language = DistrictLanguage.SimplifiedChinese)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+            if (countryCode == null)
+            {
+                throw new ArgumentNullException(nameof(countryCode));
+            }
+
+            var url = $"/common/get_province.json?country={countryCode}";
+            if (firstLetter.HasValue)
+            {
+                url += $"&capital={firstLetter.Value.ToString()}";
+            }
+            switch (language)
+            {
+                case DistrictLanguage.SimplifiedChinese:
+                    url += "&language=zh-cn";
+                    break;
+
+                case DistrictLanguage.TraditionalChinese:
+                    url += "&language=zh-tw";
+                    break;
+
+                case DistrictLanguage.English:
+                    url += "&language=english";
+                    break;
+            }
+
+            var result = await client.GetAsync<IEnumerable<JObject>>(url);
+            return result
+                .Select(item => (JProperty)item.First)
+                .Select(property => new District
+                {
+                    Code = property.Name,
+                    Name = property.Value.ToObject<string>()
+                })
+                .ToList();
+        }
+
         public static Task<RepostTimeline> GetRepostTimelineAsync(this IWeiboClient client, long statusId, long sinceId = 0, long maxId = 0, int count = 20, int page = 1)
         {
             // TODO filter_by_author
@@ -153,6 +238,28 @@ namespace HN.Social.Weibo
             }
 
             return client.GetAsync<RepostTimeline>($"/statuses/repost_timeline.json?id={statusId}&since_id={sinceId}&max_id={maxId}&count={count}&page={page}");
+        }
+
+        public static async Task<IReadOnlyList<string>> GetTimezoneListAsync(this IWeiboClient client, DistrictLanguage language = DistrictLanguage.SimplifiedChinese)
+        {
+            var url = "/common/get_timezone.json";
+            switch (language)
+            {
+                case DistrictLanguage.SimplifiedChinese:
+                    url += "?language=zh-cn";
+                    break;
+
+                case DistrictLanguage.TraditionalChinese:
+                    url += "?language=zh-tw";
+                    break;
+
+                case DistrictLanguage.English:
+                    url += "?language=english";
+                    break;
+            }
+
+            var result = await client.GetAsync<IDictionary<string, string>>(url);
+            return result.Values.ToList();
         }
 
         public static Task<UserInfo> GetUserInfoAsync(this IWeiboClient client, long userId)
