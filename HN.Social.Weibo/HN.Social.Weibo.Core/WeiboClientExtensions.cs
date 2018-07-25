@@ -38,6 +38,13 @@ namespace HN.Social.Weibo
             return client.GetAsync<Timeline>($"/statuses/user_timeline.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&base_app={(onlyCurrentApp ? "1" : "0")}");
         }
 
+        /// <summary>
+        /// 获取微博官方表情的详细信息
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="type">表情类别，默认为普通表情</param>
+        /// <param name="language">语言类别，默认为简体</param>
+        /// <returns></returns>
         public static Task<IReadOnlyList<Emotion>> GetEmotionsAsync(this IWeiboClient client, EmotionType type = EmotionType.Face, EmotionLanguage language = EmotionLanguage.SimplifiedChinese)
         {
             if (client == null)
