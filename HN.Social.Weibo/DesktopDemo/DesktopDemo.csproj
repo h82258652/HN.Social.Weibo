@@ -99,7 +99,7 @@
       <Name>HN.Social.Weibo.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\HN.Social.Weibo.Desktop\HN.Social.Weibo.Desktop.csproj">
-      <Project>{4e884e6a-13a8-454e-a408-585838ed7605}</Project>
+      <Project>{25ecb394-c789-4d6d-a4b4-1eadecfdea48}</Project>
       <Name>HN.Social.Weibo.Desktop</Name>
     </ProjectReference>
   </ItemGroup>
