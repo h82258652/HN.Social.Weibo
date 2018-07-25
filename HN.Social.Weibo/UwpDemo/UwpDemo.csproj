@@ -137,7 +137,7 @@
       <Name>HN.Social.Weibo.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\HN.Social.Weibo.Uwp\HN.Social.Weibo.Uwp.csproj">
-      <Project>{cf087b6d-d9db-4399-88a6-8af413132f5c}</Project>
+      <Project>{30959176-7236-40e5-bbd6-7ae768c64908}</Project>
       <Name>HN.Social.Weibo.Uwp</Name>
     </ProjectReference>
   </ItemGroup>

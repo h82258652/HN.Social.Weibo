@@ -5,6 +5,7 @@
     <RootNamespace>HN.Social.Weibo</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/h82258652/HN.Social.Weibo</PackageProjectUrl>
+    <Authors>h82258652</Authors>
   </PropertyGroup>
 
   <ItemGroup>

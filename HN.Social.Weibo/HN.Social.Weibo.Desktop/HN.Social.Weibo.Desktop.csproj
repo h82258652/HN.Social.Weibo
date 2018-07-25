@@ -4,6 +4,9 @@
     <RootNamespace>HN.Social.Weibo</RootNamespace>
     <ExtrasEnableWinFormsProjectSetup>true</ExtrasEnableWinFormsProjectSetup>
     <ExtrasEnableUserControlDesigner>true</ExtrasEnableUserControlDesigner>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/h82258652/HN.Social.Weibo</PackageProjectUrl>
+    <Authors>h82258652</Authors>
   </PropertyGroup>
   <ItemGroup>
     <COMReference Include="SHDocVw.dll">
