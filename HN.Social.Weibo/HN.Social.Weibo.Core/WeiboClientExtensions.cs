@@ -1,14 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HN.Social.Weibo.Models;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 
 namespace HN.Social.Weibo
 {
     public static class WeiboClientExtensions
     {
+        public static async Task<IReadOnlyList<District>> GetCountryListAsync(this IWeiboClient client, char? firstLetter = null, DistrictLanguage language = DistrictLanguage.SimplifiedChinese)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            var queryString = new QueryString();
+            if (firstLetter.HasValue)
+            {
+                queryString = queryString.Add("capital", firstLetter.Value.ToString());
+            }
+            switch (language)
+            {
+                case DistrictLanguage.SimplifiedChinese:
+                    queryString = queryString.Add("language", "zh-cn");
+                    break;
+
+                case DistrictLanguage.TraditionalChinese:
+                    queryString = queryString.Add("language", "zh-tw");
+                    break;
+
+                case DistrictLanguage.English:
+                    queryString = queryString.Add("language", "english");
+                    break;
+            }
+            var url = "/common/get_country.json" + queryString.ToUriComponent();
+            var result = await client.GetAsync<IEnumerable<JObject>>(url);
+            return result
+                .Select(item => (JProperty)item.First)
+                .Select(property => new District
+                {
+                    Code = property.Name,
+                    Name = property.Value.ToObject<string>()
+                })
+                .ToList();
+        }
+
         public static async Task<UserInfo> GetCurrentUserInfoAsync(this IWeiboClient client)
         {
             if (client == null)
