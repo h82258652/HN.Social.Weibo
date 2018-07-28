@@ -230,6 +230,59 @@ namespace HN.Social.Weibo
             return client.GetAsync<RepostTimeline>($"/statuses/repost_timeline.json?id={statusId}&since_id={sinceId}&max_id={maxId}&count={count}&page={page}&filter_by_author={(int)authorFilter}");
         }
 
+        /// <summary>
+        /// 获取当前登录用户所发出的评论列表
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="sinceId"></param>
+        /// <param name="maxId"></param>
+        /// <param name="count"></param>
+        /// <param name="page"></param>
+        /// <param name="sourceFilter"></param>
+        /// <returns></returns>
+        public static Task<CommentList> GetCurrentUserSentCommentsAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, int count = 50, int page = 1, SourceFilter sourceFilter = SourceFilter.None)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            var url = $"/comments/by_me.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&filter_by_source={(int)sourceFilter}";
+            return client.GetAsync<CommentList>(url);
+        }
+
+        /// <summary>
+        /// 获取当前登录用户所接收到的评论列表
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="sinceId"></param>
+        /// <param name="maxId"></param>
+        /// <param name="count"></param>
+        /// <param name="page"></param>
+        /// <param name="authorFilter"></param>
+        /// <param name="sourceFilter"></param>
+        /// <returns></returns>
+        public static Task<CommentList> GetCurrentUserReceivedCommentsAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, int count = 50, int page = 1, AuthorFilter authorFilter = AuthorFilter.None, SourceFilter sourceFilter = SourceFilter.None)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            var url = $"/comments/to_me.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&filter_by_author={(int)authorFilter}&filter_by_source={(int)sourceFilter}";
+            return client.GetAsync<CommentList>(url);
+        }
+
+        public static Task<Status> GetStatusAsync(this IWeiboClient client, long id)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            return client.GetAsync<Status>($"/statuses/show.json?id={id}");
+        }
+
         public static async Task<IReadOnlyList<string>> GetTimezoneListAsync(this IWeiboClient client, DistrictLanguage language = DistrictLanguage.SimplifiedChinese)
         {
             var url = "/common/get_timezone.json";
