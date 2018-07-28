@@ -93,6 +93,28 @@ namespace HN.Social.Weibo
                 .ToList();
         }
 
+        public static async Task<UserIdList> GetCurrentUserFriendIdsAsync(this IWeiboClient client, int count = 5, int cursor = 0)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            var userId = await InternalGetCurrentUserId(client);
+            return await GetFriendIdsAsync(client, userId, count, cursor);
+        }
+
+        public static async Task<UserList> GetCurrentUserFriendsAsync(this IWeiboClient client, int count = 5, int cursor = 0, bool includeStatus = false)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            var userId = await InternalGetCurrentUserId(client);
+            return await GetFriendsAsync(client, userId, count, cursor, includeStatus);
+        }
+
         public static async Task<UserInfo> GetCurrentUserInfoAsync(this IWeiboClient client)
         {
             if (client == null)
@@ -100,12 +122,51 @@ namespace HN.Social.Weibo
                 throw new ArgumentNullException(nameof(client));
             }
 
-            var userId = await client.GetCurrentUserId();
-            if (!userId.HasValue)
+            var userId = await InternalGetCurrentUserId(client);
+            return await GetUserInfoAsync(client, userId);
+        }
+
+        /// <summary>
+        /// 获取当前登录用户所接收到的评论列表
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="sinceId"></param>
+        /// <param name="maxId"></param>
+        /// <param name="count"></param>
+        /// <param name="page"></param>
+        /// <param name="authorFilter"></param>
+        /// <param name="sourceFilter"></param>
+        /// <returns></returns>
+        public static Task<CommentList> GetCurrentUserReceivedCommentsAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, int count = 50, int page = 1, AuthorFilter authorFilter = AuthorFilter.None, SourceFilter sourceFilter = SourceFilter.None)
+        {
+            if (client == null)
             {
-                throw new InvalidOperationException("用户未登录");
+                throw new ArgumentNullException(nameof(client));
             }
-            return await GetUserInfoAsync(client, userId.Value);
+
+            var url = $"/comments/to_me.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&filter_by_author={(int)authorFilter}&filter_by_source={(int)sourceFilter}";
+            return client.GetAsync<CommentList>(url);
+        }
+
+        /// <summary>
+        /// 获取当前登录用户所发出的评论列表
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="sinceId"></param>
+        /// <param name="maxId"></param>
+        /// <param name="count"></param>
+        /// <param name="page"></param>
+        /// <param name="sourceFilter"></param>
+        /// <returns></returns>
+        public static Task<CommentList> GetCurrentUserSentCommentsAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, int count = 50, int page = 1, SourceFilter sourceFilter = SourceFilter.None)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            var url = $"/comments/by_me.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&filter_by_source={(int)sourceFilter}";
+            return client.GetAsync<CommentList>(url);
         }
 
         public static Task<Timeline> GetCurrentUserTimelineAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, long count = 20, int page = 1, bool onlyCurrentApp = false, bool includeUser = true)
@@ -168,6 +229,54 @@ namespace HN.Social.Weibo
             return client.GetAsync<IReadOnlyList<Emotion>>(url);
         }
 
+        public static Task<UserIdList> GetFriendIdsAsync(this IWeiboClient client, long userId, int count = 5, int cursor = 0)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            return client.GetAsync<UserIdList>($"/friendships/friends/ids.json?uid={userId}&count={count}&cursor={cursor}");
+        }
+
+        public static Task<UserIdList> GetFriendIdsAsync(this IWeiboClient client, string nickname, int count = 5, int cursor = 0)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+            if (nickname == null)
+            {
+                throw new ArgumentNullException(nameof(nickname));
+            }
+
+            return client.GetAsync<UserIdList>($"/friendships/friends/ids.json?screen_name={WebUtility.UrlEncode(nickname)}&count={count}&cursor={cursor}");
+        }
+
+        public static Task<UserList> GetFriendsAsync(this IWeiboClient client, long userId, int count = 5, int cursor = 0, bool includeStatus = false)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+
+            return client.GetAsync<UserList>($"/friendships/friends.json?uid={userId}&count={count}&cursor={cursor}&trim_status={(includeStatus ? "0" : "1")}");
+        }
+
+        public static Task<UserList> GetFriendsAsync(this IWeiboClient client, string nickname, int count = 5, int cursor = 0, bool includeStatus = false)
+        {
+            if (client == null)
+            {
+                throw new ArgumentNullException(nameof(client));
+            }
+            if (nickname == null)
+            {
+                throw new ArgumentNullException(nameof(nickname));
+            }
+
+            return client.GetAsync<UserList>($"/friendships/friends.json?screen_name={WebUtility.UrlEncode(nickname)}&count={count}&cursor={cursor}&trim_status={(includeStatus ? "0" : "1")}");
+        }
+
         public static Task<Timeline> GetHomeTimelineAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, int count = 20, int page = 1, bool onlyCurrentApp = false, bool includeUser = true)
         {
             if (client == null)
@@ -228,49 +337,6 @@ namespace HN.Social.Weibo
             }
 
             return client.GetAsync<RepostTimeline>($"/statuses/repost_timeline.json?id={statusId}&since_id={sinceId}&max_id={maxId}&count={count}&page={page}&filter_by_author={(int)authorFilter}");
-        }
-
-        /// <summary>
-        /// 获取当前登录用户所发出的评论列表
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="sinceId"></param>
-        /// <param name="maxId"></param>
-        /// <param name="count"></param>
-        /// <param name="page"></param>
-        /// <param name="sourceFilter"></param>
-        /// <returns></returns>
-        public static Task<CommentList> GetCurrentUserSentCommentsAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, int count = 50, int page = 1, SourceFilter sourceFilter = SourceFilter.None)
-        {
-            if (client == null)
-            {
-                throw new ArgumentNullException(nameof(client));
-            }
-
-            var url = $"/comments/by_me.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&filter_by_source={(int)sourceFilter}";
-            return client.GetAsync<CommentList>(url);
-        }
-
-        /// <summary>
-        /// 获取当前登录用户所接收到的评论列表
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="sinceId"></param>
-        /// <param name="maxId"></param>
-        /// <param name="count"></param>
-        /// <param name="page"></param>
-        /// <param name="authorFilter"></param>
-        /// <param name="sourceFilter"></param>
-        /// <returns></returns>
-        public static Task<CommentList> GetCurrentUserReceivedCommentsAsync(this IWeiboClient client, long sinceId = 0, long maxId = 0, int count = 50, int page = 1, AuthorFilter authorFilter = AuthorFilter.None, SourceFilter sourceFilter = SourceFilter.None)
-        {
-            if (client == null)
-            {
-                throw new ArgumentNullException(nameof(client));
-            }
-
-            var url = $"/comments/to_me.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&filter_by_author={(int)authorFilter}&filter_by_source={(int)sourceFilter}";
-            return client.GetAsync<CommentList>(url);
         }
 
         public static Task<Status> GetStatusAsync(this IWeiboClient client, long id)
@@ -453,6 +519,16 @@ namespace HN.Social.Weibo
                 postContent.Add(new StringContent(ip), "rip");
             }
             return client.PostAsync<Status>("/statuses/share.json", postContent);
+        }
+
+        private static async Task<long> InternalGetCurrentUserId(IWeiboClient client)
+        {
+            var userId = await client.GetCurrentUserId();
+            if (!userId.HasValue)
+            {
+                throw new InvalidOperationException("用户未登录");
+            }
+            return userId.Value;
         }
     }
 }
