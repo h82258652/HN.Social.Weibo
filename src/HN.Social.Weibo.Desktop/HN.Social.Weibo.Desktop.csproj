@@ -8,6 +8,9 @@
     <PackageProjectUrl>https://github.com/h82258652/HN.Social.Weibo</PackageProjectUrl>
     <Authors>h82258652</Authors>
   </PropertyGroup>
+  <PropertyGroup>
+    <Features>strict</Features>
+  </PropertyGroup>
   <ItemGroup>
     <COMReference Include="SHDocVw.dll">
       <Guid>eab22ac0-30c1-11cf-a7eb-0000c05bae0b</Guid>

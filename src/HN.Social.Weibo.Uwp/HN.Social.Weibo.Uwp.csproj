@@ -6,6 +6,9 @@
     <PackageProjectUrl>https://github.com/h82258652/HN.Social.Weibo</PackageProjectUrl>
     <Authors>h82258652</Authors>
   </PropertyGroup>
+  <PropertyGroup>
+    <Features>strict</Features>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\HN.Social.Weibo.Core\HN.Social.Weibo.Core.csproj" />
   </ItemGroup>
