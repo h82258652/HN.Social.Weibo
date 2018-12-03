@@ -1,11 +1,11 @@
-# HN.Social.Weibo
+﻿# HN.Social.Weibo
 新浪微博 .net API for Desktop and UWP  
 [![Build status](https://ci.appveyor.com/api/projects/status/rj3k3xgulnby9kw6?svg=true)](https://ci.appveyor.com/project/h82258652/hn-social-weibo)
 #### 版本要求
 Desktop：.net framework 4.6.1  
-UWP：16299
+UWP：17763
 
-本文档编写于 **2018 年 7 月 17 日**
+本文档编写于 **2018 年 12 月 03 日**
 
 已封装基本的 API，后续会补充其余 API 的封装，没有的 API 可使用扩展方法来封装
 
