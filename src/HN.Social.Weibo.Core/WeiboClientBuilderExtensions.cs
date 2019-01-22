@@ -1,18 +1,19 @@
 ﻿using System;
+using HN.Social.Weibo.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HN.Social.Weibo
 {
     public static class WeiboClientBuilderExtensions
     {
-        public static IWeiboClientBuilder UseAccessTokenStorage<T>(this IWeiboClientBuilder builder) where T : class, IAccessTokenStorageService
+        public static IWeiboClientBuilder UseAccessTokenStorage<T>(this IWeiboClientBuilder builder) where T : class, IAccessTokenStorage
         {
             if (builder == null)
             {
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            builder.Services.AddTransient<IAccessTokenStorageService, T>();
+            builder.Services.AddTransient<IAccessTokenStorage, T>();
             return builder;
         }
 
@@ -25,6 +26,16 @@ namespace HN.Social.Weibo
 
             builder.Services.AddTransient<IAuthorizationProvider, T>();
             return builder;
+        }
+
+        public static IWeiboClientBuilder UseDefaultAccessTokenStorage(this IWeiboClientBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            return builder.UseAccessTokenStorage<AccessTokenStorage>();
         }
 
         public static IWeiboClientBuilder WithConfig(this IWeiboClientBuilder builder, string appKey, string appSecret, string redirectUri)

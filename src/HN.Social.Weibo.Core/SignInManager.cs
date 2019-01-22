@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using HN.Social.Weibo.Authorization;
 using HN.Social.Weibo.Models;
 using Microsoft.Extensions.Options;
 
@@ -7,45 +8,39 @@ namespace HN.Social.Weibo
 {
     internal class SignInManager
     {
-        private readonly IAccessTokenStorageService _accessTokenStorageService;
+        private readonly IAccessTokenStorage _accessTokenStorage;
         private readonly IAuthorizationProvider _authorizationProvider;
         private readonly WeiboOptions _weiboOptions;
-        private AccessToken _memoryAccessToken;
 
-        internal SignInManager(IOptions<WeiboOptions> weiboOptions, IAuthorizationProvider authorizationProvider, IAccessTokenStorageService accessTokenStorageService)
+        internal SignInManager(IOptions<WeiboOptions> weiboOptions, IAuthorizationProvider authorizationProvider, IAccessTokenStorage accessTokenStorage)
         {
             _weiboOptions = weiboOptions.Value;
             _authorizationProvider = authorizationProvider;
-            _accessTokenStorageService = accessTokenStorageService;
+            _accessTokenStorage = accessTokenStorage;
         }
 
-        internal async Task<AccessToken> GetAccessToken()
+        internal bool IsSignIn => GetAccessToken() != null;
+
+        internal AccessToken GetAccessToken()
         {
-            if (_memoryAccessToken == null)
-            {
-                _memoryAccessToken = await _accessTokenStorageService.LoadAsync();
-            }
-            if (_memoryAccessToken == null)
+            var accessToken = _accessTokenStorage.Load();
+            if (accessToken == null)
             {
                 return null;
             }
-            if (_memoryAccessToken.ExpiressAt <= DateTime.Now)
+
+            if (accessToken.ExpiresAt <= DateTime.Now)
             {
-                await _accessTokenStorageService.ClearAsync();
-                _memoryAccessToken = null;
+                _accessTokenStorage.Clear();
                 return null;
             }
-            return _memoryAccessToken;
-        }
 
-        internal async Task<bool> IsSignIn()
-        {
-            return await GetAccessToken() != null;
+            return accessToken;
         }
 
         internal async Task<AccessToken> SignInAndGetAccessTokenAsync()
         {
-            var accessToken = await GetAccessToken();
+            var accessToken = GetAccessToken();
             if (accessToken != null)
             {
                 return accessToken;
@@ -57,12 +52,11 @@ namespace HN.Social.Weibo
 
             accessToken = new AccessToken()
             {
-                Value = authorizationResult.AccessToken,
-                ExpiressAt = requestTime.AddSeconds(authorizationResult.ExpiresIn).AddMinutes(-5),// 5 分钟用作缓冲
-                UserId = authorizationResult.UserId
+                ExpiresAt = requestTime.AddSeconds(authorizationResult.ExpiresIn).AddMinutes(-5),// 5 分钟用作缓冲
+                UserId = authorizationResult.UserId,
+                Value = authorizationResult.AccessToken
             };
-            await _accessTokenStorageService.SaveAsync(accessToken);
-            _memoryAccessToken = accessToken;
+            _accessTokenStorage.Save(accessToken);
             return accessToken;
         }
 
@@ -73,8 +67,8 @@ namespace HN.Social.Weibo
 
         internal Task SignOutAsync()
         {
-            _memoryAccessToken = null;
-            return _accessTokenStorageService.ClearAsync();
+            _accessTokenStorage.Clear();
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using HN.Social.Weibo.Models;
 using Windows.Storage;
@@ -8,7 +9,7 @@ namespace HN.Social.Weibo
 {
     public static class WeiboClientUwpExtensions
     {
-        public static async Task<Status> ShareAsync(this IWeiboClient client, string status, StorageFile imageFile, string ip = null)
+        public static async Task<Status> ShareAsync(this IWeiboClient client, string status, StorageFile imageFile, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (client == null)
             {
@@ -24,7 +25,7 @@ namespace HN.Social.Weibo
             }
 
             var image = (await FileIO.ReadBufferAsync(imageFile)).ToArray();
-            return await client.ShareAsync(status, image, ip);
+            return await client.ShareAsync(status, image, cancellationToken);
         }
     }
 }

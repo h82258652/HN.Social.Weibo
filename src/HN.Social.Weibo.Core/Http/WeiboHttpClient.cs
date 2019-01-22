@@ -7,7 +7,7 @@ namespace HN.Social.Weibo.Http
     {
         internal WeiboHttpClient(SignInManager signInManager) : base(new WeiboHttpClientHandler(signInManager))
         {
-            BaseAddress = new Uri("https://api.weibo.com/2");
+            BaseAddress = new Uri(Constants.WeiboUrlBase);
         }
     }
 }

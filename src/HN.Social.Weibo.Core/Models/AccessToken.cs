@@ -4,7 +4,7 @@ namespace HN.Social.Weibo.Models
 {
     public class AccessToken
     {
-        public DateTime ExpiressAt { get; set; }
+        public DateTime ExpiresAt { get; set; }
 
         public long UserId { get; set; }
 

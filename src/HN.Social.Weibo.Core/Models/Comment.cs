@@ -35,7 +35,7 @@ namespace HN.Social.Weibo.Models
         /// 评论作者的用户信息字段
         /// </summary>
         [JsonProperty("user")]
-        public UserInfo User { get; set; }
+        public User User { get; set; }
 
         /// <summary>
         /// 评论的MID

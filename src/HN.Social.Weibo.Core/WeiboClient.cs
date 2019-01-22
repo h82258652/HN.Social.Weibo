@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+using HN.Social.Weibo.Authorization;
 using HN.Social.Weibo.Http;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace HN.Social.Weibo
 {
@@ -10,65 +13,55 @@ namespace HN.Social.Weibo
     {
         private readonly SignInManager _signInManager;
 
-        public WeiboClient(IOptions<WeiboOptions> weiboOptions, IAuthorizationProvider authorizationProvider, IAccessTokenStorageService accessTokenStorageService)
+        public WeiboClient(IOptions<WeiboOptions> weiboOptions, IAuthorizationProvider authorizationProvider, IAccessTokenStorage accessTokenStorage)
         {
-            _signInManager = new SignInManager(weiboOptions, authorizationProvider, accessTokenStorageService);
+            _signInManager = new SignInManager(weiboOptions, authorizationProvider, accessTokenStorage);
         }
 
-        public async Task<T> GetAsync<T>(string uri)
+        public bool IsSignIn => _signInManager.IsSignIn;
+
+        /// <summary>
+        /// 获取当前已登录的用户 Id。
+        /// </summary>
+        /// <exception cref="InvalidOperationException">用户未登录。</exception>
+        public long UserId
         {
-            if (uri == null)
+            get
             {
-                throw new ArgumentNullException(nameof(uri));
-            }
-
-            using (var client = CreateHttpClient())
-            {
-                var response = await client.GetAsync(uri);
-                return await response.Content.ReadAsJsonAsync<T>();
-            }
-        }
-
-        public async Task<long?> GetCurrentUserId()
-        {
-            var accessToken = await _signInManager.GetAccessToken();
-            return accessToken?.UserId;
-        }
-
-        public Task<bool> IsSignIn()
-        {
-            return _signInManager.IsSignIn();
-        }
-
-        public async Task<T> PostAsync<T>(string uri, HttpContent content)
-        {
-            if (uri == null)
-            {
-                throw new ArgumentNullException(nameof(uri));
-            }
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            using (var client = CreateHttpClient())
-            {
-                var response = await client.PostAsync(uri, content);
-                return await response.Content.ReadAsJsonAsync<T>();
+                var accessToken = _signInManager.GetAccessToken();
+                if (accessToken == null)
+                {
+                    throw new InvalidOperationException("用户未登录");
+                }
+                return accessToken.UserId;
             }
         }
 
-        public async Task<T> SendAsync<T>(HttpRequestMessage request)
+        public Task<T> GetAsync<T>(string uri, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return SendAsync<T>(new HttpRequestMessage(HttpMethod.Get, uri), cancellationToken);
+        }
+
+        public Task<T> PostAsync<T>(string uri, HttpContent content, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return SendAsync<T>(new HttpRequestMessage(HttpMethod.Post, uri)
+            {
+                Content = content
+            }, cancellationToken);
+        }
+
+        public async Task<T> SendAsync<T>(HttpRequestMessage request, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            using (var client = CreateHttpClient())
+            using (var client = new WeiboHttpClient(_signInManager))
             {
-                var response = await client.SendAsync(request);
-                return await response.Content.ReadAsJsonAsync<T>();
+                var response = await client.SendAsync(request, cancellationToken);
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<T>(json);
             }
         }
 
@@ -80,11 +73,6 @@ namespace HN.Social.Weibo
         public Task SignOutAsync()
         {
             return _signInManager.SignOutAsync();
-        }
-
-        private WeiboHttpClient CreateHttpClient()
-        {
-            return new WeiboHttpClient(_signInManager);
         }
     }
 }

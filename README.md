@@ -5,7 +5,7 @@
 Desktop：.net framework 4.6.1  
 UWP：17763
 
-本文档编写于 **2018 年 12 月 03 日**
+本文档编写于 **2019 年 01 月 22 日**
 
 已封装基本的 API，后续会补充其余 API 的封装，没有的 API 可使用扩展方法来封装
 
@@ -41,7 +41,7 @@ await client.SignOutAsync();
 ```
 #### 2.3、获取是否登入
 ```C#
-await client.IsSignIn();
+bool isSignIn = client.IsSignIn;
 ```
 #### 2.4、获取用户信息
 ```C#

@@ -1,4 +1,4 @@
-﻿namespace HN.Social.Weibo
+﻿namespace HN.Social.Weibo.Authorization
 {
     public class HttpErrorAuthorizationException : AuthorizationException
     {

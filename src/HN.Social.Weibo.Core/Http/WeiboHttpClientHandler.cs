@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using HN.Social.Weibo.Models;
+using Newtonsoft.Json;
 
 namespace HN.Social.Weibo.Http
 {
@@ -35,18 +36,19 @@ namespace HN.Social.Weibo.Http
                 response.Content = new ByteArrayContent(bytes);
             }
 
-            CheckResponseErrorCode(response);
+            await CheckResponseErrorCodeAsync(response);
 
             return response;
         }
 
         [DebuggerStepThrough]
-        private async void CheckResponseErrorCode(HttpResponseMessage response)
+        private async Task CheckResponseErrorCodeAsync(HttpResponseMessage response)
         {
             try
             {
-                var result = await response.Content.ReadAsJsonAsync<WeiboResult>();
-                if (result.ErrorCode == Constants.UserRemoveAuthorizationErrorCode)
+                var json = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<WeiboResult>(json);
+                if (result.ErrorCode == (int)WeiboErrorCode.UserRemoveAuthorization)
                 {
                     await _signInManager.SignOutAsync();
                 }

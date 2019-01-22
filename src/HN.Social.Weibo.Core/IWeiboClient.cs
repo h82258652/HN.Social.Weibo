@@ -1,19 +1,20 @@
 ﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HN.Social.Weibo
 {
     public interface IWeiboClient
     {
-        Task<T> GetAsync<T>(string uri);
+        bool IsSignIn { get; }
 
-        Task<long?> GetCurrentUserId();
+        long UserId { get; }
 
-        Task<bool> IsSignIn();
+        Task<T> GetAsync<T>(string uri, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<T> PostAsync<T>(string uri, HttpContent content);
+        Task<T> PostAsync<T>(string uri, HttpContent content, CancellationToken cancellationToken = default(CancellationToken));
 
-        Task<T> SendAsync<T>(HttpRequestMessage request);
+        Task<T> SendAsync<T>(HttpRequestMessage request, CancellationToken cancellationToken = default(CancellationToken));
 
         Task SignInAsync();
 

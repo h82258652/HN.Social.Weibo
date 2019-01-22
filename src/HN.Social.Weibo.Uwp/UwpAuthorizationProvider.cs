@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Windows.Foundation;
 using Windows.Security.Authentication.Web;
+using HN.Social.Weibo.Authorization;
 
 namespace HN.Social.Weibo
 {

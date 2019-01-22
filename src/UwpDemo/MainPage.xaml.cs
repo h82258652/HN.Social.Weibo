@@ -4,6 +4,7 @@ using HN.Social.Weibo;
 using HN.Social.Weibo.Models;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using HN.Social.Weibo.Authorization;
 
 namespace UwpDemo
 {
@@ -24,7 +25,7 @@ namespace UwpDemo
 
         private async void CheckSignInButton_Click(object sender, RoutedEventArgs e)
         {
-            if (await _client.IsSignIn())
+            if (_client.IsSignIn)
             {
                 await new MessageDialog("已登录").ShowAsync();
             }
@@ -36,7 +37,7 @@ namespace UwpDemo
 
         private async void GetCurrentUserInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            var userInfo = await _client.GetCurrentUserInfoAsync();
+            var userInfo = await _client.GetCurrentUserAsync();
             if (!userInfo.Success())
             {
                 await new MessageDialog(userInfo.ErrorMessage).ShowAsync();

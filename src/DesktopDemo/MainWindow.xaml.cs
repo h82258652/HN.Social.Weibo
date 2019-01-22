@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Windows;
 using HN.Social.Weibo;
+using HN.Social.Weibo.Authorization;
 using HN.Social.Weibo.Models;
 
 namespace DesktopDemo
@@ -21,9 +22,9 @@ namespace DesktopDemo
             InitializeComponent();
         }
 
-        private async void CheckSignInButton_Click(object sender, RoutedEventArgs e)
+        private void CheckSignInButton_Click(object sender, RoutedEventArgs e)
         {
-            if (await _client.IsSignIn())
+            if (_client.IsSignIn)
             {
                 MessageBox.Show("已登录");
             }
@@ -35,8 +36,8 @@ namespace DesktopDemo
 
         private async void GetCurrentUserInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            var userInfo = await _client.GetCurrentUserInfoAsync();
-            if (!userInfo.Success())
+            var userInfo = await _client.GetCurrentUserAsync();
+            if (userInfo.ErrorCode == 0)
             {
                 MessageBox.Show(userInfo.ErrorMessage);
                 return;

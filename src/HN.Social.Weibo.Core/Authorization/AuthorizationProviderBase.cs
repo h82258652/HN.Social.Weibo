@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using HN.Social.Weibo.Http;
 using HN.Social.Weibo.Models;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
-namespace HN.Social.Weibo
+namespace HN.Social.Weibo.Authorization
 {
     public abstract class AuthorizationProviderBase : IAuthorizationProvider
     {
@@ -34,7 +34,8 @@ namespace HN.Social.Weibo
                 var postContent = new FormUrlEncodedContent(postData);
 
                 var response = await client.PostAsync("https://api.weibo.com/oauth2/access_token", postContent);
-                return await response.Content.ReadAsJsonAsync<AuthorizationResult>();
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<AuthorizationResult>(json);
             }
         }
 

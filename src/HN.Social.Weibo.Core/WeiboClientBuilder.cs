@@ -1,4 +1,5 @@
 ﻿using System;
+using HN.Social.Weibo.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -25,7 +26,7 @@ namespace HN.Social.Weibo
             {
                 throw new Exception("未配置 AuthorizationProvider");
             }
-            if (serviceProvider.GetService<IAccessTokenStorageService>() == null)
+            if (serviceProvider.GetService<IAccessTokenStorage>() == null)
             {
                 throw new Exception("未配置 AccessToken 存储");
             }
