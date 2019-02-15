@@ -3,7 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/rj3k3xgulnby9kw6?svg=true)](https://ci.appveyor.com/project/h82258652/hn-social-weibo)
 #### 版本要求
 Desktop：.net framework 4.6.1  
-UWP：17763
+UWP：16299
 
 本文档编写于 **2019 年 01 月 22 日**
 
