@@ -33,6 +33,7 @@ namespace HN.Social.Weibo
                 {
                     throw new InvalidOperationException("用户未登录");
                 }
+
                 return accessToken.UserId;
             }
         }
