@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HN.Social.Weibo.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace HN.Social.Weibo
+namespace HN.Social.Weibo.Authorization
 {
     public class DesktopAuthorizationProvider : AuthorizationProviderBase
     {

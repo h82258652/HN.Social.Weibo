@@ -131,7 +131,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UwpAuthorizationProvider.cs" />
+    <Compile Include="Authorization\UwpAuthorizationProvider.cs" />
     <Compile Include="WeiboClientBuilderUwpExtensions.cs" />
     <Compile Include="WeiboClientUwpExtensions.cs" />
     <EmbeddedResource Include="Properties\HN.Social.Weibo.Uwp.rd.xml" />

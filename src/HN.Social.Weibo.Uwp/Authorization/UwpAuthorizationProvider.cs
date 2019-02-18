@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Windows.Foundation;
 using Windows.Security.Authentication.Web;
-using HN.Social.Weibo.Authorization;
 
-namespace HN.Social.Weibo
+namespace HN.Social.Weibo.Authorization
 {
     public class UwpAuthorizationProvider : AuthorizationProviderBase
     {

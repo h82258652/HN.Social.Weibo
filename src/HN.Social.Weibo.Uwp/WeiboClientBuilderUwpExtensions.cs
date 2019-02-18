@@ -1,4 +1,5 @@
 ﻿using System;
+using HN.Social.Weibo.Authorization;
 
 namespace HN.Social.Weibo
 {

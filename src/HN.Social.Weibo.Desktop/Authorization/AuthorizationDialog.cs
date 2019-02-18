@@ -2,7 +2,7 @@
 using System.Web;
 using System.Windows.Forms;
 
-namespace HN.Social.Weibo
+namespace HN.Social.Weibo.Authorization
 {
     public partial class AuthorizationDialog : Form
     {
