@@ -38,7 +38,13 @@ namespace HN.Social.Weibo.Authorization
         private bool CheckUrlQuery(Uri url)
         {
             var queryString = url.Query;
-            queryString = queryString.Substring(queryString.LastIndexOf('?'));
+            var lastIndex = queryString.LastIndexOf('?');
+            if (lastIndex < 0)
+            {
+                return false;
+            }
+
+            queryString = queryString.Substring(lastIndex);
             var query = HttpUtility.ParseQueryString(queryString);
             var code = query.Get("code");
             if (code == null)
