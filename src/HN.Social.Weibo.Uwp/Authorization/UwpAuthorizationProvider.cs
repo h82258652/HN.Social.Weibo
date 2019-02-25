@@ -8,7 +8,7 @@ namespace HN.Social.Weibo.Authorization
 {
     public class UwpAuthorizationProvider : AuthorizationProviderBase
     {
-        public UwpAuthorizationProvider(IOptions<WeiboOptions> weiboOptions) : base(weiboOptions)
+        public UwpAuthorizationProvider(IOptions<WeiboOptions> weiboOptionsAccesser) : base(weiboOptionsAccesser)
         {
         }
 

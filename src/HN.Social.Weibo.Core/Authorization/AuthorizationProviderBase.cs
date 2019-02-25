@@ -12,9 +12,9 @@ namespace HN.Social.Weibo.Authorization
     {
         private readonly WeiboOptions _weiboOptions;
 
-        protected AuthorizationProviderBase(IOptions<WeiboOptions> weiboOptions)
+        protected AuthorizationProviderBase(IOptions<WeiboOptions> weiboOptionsAccesser)
         {
-            _weiboOptions = weiboOptions.Value;
+            _weiboOptions = weiboOptionsAccesser.Value;
         }
 
         public async Task<AuthorizationResult> AuthorizeAsync(Uri authorizationUri, Uri callbackUri)

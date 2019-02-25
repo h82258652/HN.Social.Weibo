@@ -12,9 +12,9 @@ namespace HN.Social.Weibo
         private readonly IAuthorizationProvider _authorizationProvider;
         private readonly WeiboOptions _weiboOptions;
 
-        internal SignInManager(IOptions<WeiboOptions> weiboOptions, IAuthorizationProvider authorizationProvider, IAccessTokenStorage accessTokenStorage)
+        internal SignInManager(IOptions<WeiboOptions> weiboOptionsAccesser, IAuthorizationProvider authorizationProvider, IAccessTokenStorage accessTokenStorage)
         {
-            _weiboOptions = weiboOptions.Value;
+            _weiboOptions = weiboOptionsAccesser.Value;
             _authorizationProvider = authorizationProvider;
             _accessTokenStorage = accessTokenStorage;
         }

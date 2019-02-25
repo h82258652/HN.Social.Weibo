@@ -13,9 +13,9 @@ namespace HN.Social.Weibo
     {
         private readonly SignInManager _signInManager;
 
-        public WeiboClient(IOptions<WeiboOptions> weiboOptions, IAuthorizationProvider authorizationProvider, IAccessTokenStorage accessTokenStorage)
+        public WeiboClient(IOptions<WeiboOptions> weiboOptionsAccesser, IAuthorizationProvider authorizationProvider, IAccessTokenStorage accessTokenStorage)
         {
-            _signInManager = new SignInManager(weiboOptions, authorizationProvider, accessTokenStorage);
+            _signInManager = new SignInManager(weiboOptionsAccesser, authorizationProvider, accessTokenStorage);
         }
 
         public bool IsSignIn => _signInManager.IsSignIn;
