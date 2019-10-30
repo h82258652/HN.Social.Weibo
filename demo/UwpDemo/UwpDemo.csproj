@@ -132,11 +132,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HN.Social.Weibo.Core\HN.Social.Weibo.Core.csproj">
-      <Project>{d22a0126-21f1-4819-9022-55c9a377d230}</Project>
+    <ProjectReference Include="..\..\src\HN.Social.Weibo.Core\HN.Social.Weibo.Core.csproj">
+      <Project>{798932b7-5417-4591-a6fd-aa2ea12943cb}</Project>
       <Name>HN.Social.Weibo.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HN.Social.Weibo.Uwp\HN.Social.Weibo.Uwp.csproj">
+    <ProjectReference Include="..\..\src\HN.Social.Weibo.Uwp\HN.Social.Weibo.Uwp.csproj">
       <Project>{b7bb63f2-05fb-4369-8391-96204868f7ec}</Project>
       <Name>HN.Social.Weibo.Uwp</Name>
     </ProjectReference>

@@ -95,11 +95,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HN.Social.Weibo.Core\HN.Social.Weibo.Core.csproj">
+    <ProjectReference Include="..\..\src\HN.Social.Weibo.Core\HN.Social.Weibo.Core.csproj">
       <Project>{798932b7-5417-4591-a6fd-aa2ea12943cb}</Project>
       <Name>HN.Social.Weibo.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HN.Social.Weibo.Desktop\HN.Social.Weibo.Desktop.csproj">
+    <ProjectReference Include="..\..\src\HN.Social.Weibo.Desktop\HN.Social.Weibo.Desktop.csproj">
       <Project>{89915cc1-39c3-46de-84fb-14c30fedb50c}</Project>
       <Name>HN.Social.Weibo.Desktop</Name>
     </ProjectReference>
