@@ -1,0 +1,77 @@
+///////////////////////////////////////////////////////////////////////////////
+// TOOLS / ADDINS
+///////////////////////////////////////////////////////////////////////////////
+
+#tool nuget:?package=vswhere
+
+//////////////////////////////////////////////////////////////////////
+// ARGUMENTS
+//////////////////////////////////////////////////////////////////////
+
+var msBuildPath = GetFiles(VSWhereLatest() + "/**/MSBuild.exe").FirstOrDefault();
+
+var target = Argument("target", "Default");
+var configuration = Argument("configuration", "Release");
+var verbosity = Argument("verbosity", Verbosity.Minimal);
+
+//////////////////////////////////////////////////////////////////////
+// PREPARATION
+//////////////////////////////////////////////////////////////////////
+
+var solution = "./HN.Social.Weibo.sln";
+
+//////////////////////////////////////////////////////////////////////
+// TASKS
+//////////////////////////////////////////////////////////////////////
+
+Task("Clean")
+    .ContinueOnError()
+    .Does(() =>
+{
+    CleanDirectories("./src/*/bin");
+});
+
+Task("Restore-NuGet-Packages")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+    NuGetRestore(solution);
+});
+
+Task("Build")
+    .IsDependentOn("Restore-NuGet-Packages")
+    .Does(() =>
+{
+    if(IsRunningOnWindows())
+    {
+        // Use MSBuild
+        var settings = new MSBuildSettings
+        {
+            ToolPath = msBuildPath
+        }
+        .SetConfiguration(configuration)
+        .SetPlatformTarget(PlatformTarget.x86)
+        .SetVerbosity(verbosity);
+        MSBuild(solution, settings);
+    }
+    else
+    {
+        // Use XBuild
+        XBuild(solution, configurator =>
+            configurator.SetConfiguration(configuration)
+                .SetVerbosity(verbosity));
+    }
+});
+
+//////////////////////////////////////////////////////////////////////
+// TASK TARGETS
+//////////////////////////////////////////////////////////////////////
+
+Task("Default")
+    .IsDependentOn("Build");
+
+//////////////////////////////////////////////////////////////////////
+// EXECUTION
+//////////////////////////////////////////////////////////////////////
+
+RunTarget(target);
