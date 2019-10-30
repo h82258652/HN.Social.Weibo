@@ -2,7 +2,7 @@
 // TOOLS / ADDINS
 ///////////////////////////////////////////////////////////////////////////////
 
-#tool nuget:?package=vswhere
+#tool vswhere
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -50,7 +50,6 @@ Task("Build")
             ToolPath = msBuildPath
         }
         .SetConfiguration(configuration)
-        .SetPlatformTarget(PlatformTarget.x86)
         .SetVerbosity(verbosity);
         MSBuild(solution, settings);
     }
