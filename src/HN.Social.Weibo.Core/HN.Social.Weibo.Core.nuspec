@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>HN.Social.Weibo.Core</id>
+    <version>$version$</version>
+    <title>HN.Social.Weibo.Core</title>
+    <authors>h82258652</authors>
+    <owners>h82258652</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/h82258652/HN.Social.Weibo</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>HN.Social.Weibo.Core</description>
+    <tags></tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+      <dependency id="Microsoft.Extensions.DependencyInjection" version="2.2.0" />
+      <dependency id="Microsoft.Extensions.Options" version="2.2.0" />
+      <dependency id="Newtonsoft.Json" Version="12.0.2" />
+      <dependency id="Xam.Plugins.Settings" Version="3.1.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\netstandard2.0\HN.Social.Weibo.Core.dll" target="lib\netstandard2.0" />
+    <file src="bin\Release\netstandard2.0\HN.Social.Weibo.Core.xml" target="lib\netstandard2.0" />
+    <file src="bin\Release\netstandard2.0\HN.Social.Weibo.Core.pdb" target="lib\netstandard2.0" />
+  </files>
+</package>
