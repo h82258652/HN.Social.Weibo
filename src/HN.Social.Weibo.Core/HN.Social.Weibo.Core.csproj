@@ -1,4 +1,5 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>HN.Social.Weibo</RootNamespace>
@@ -10,16 +11,14 @@
     <PackageProjectUrl>https://github.com/h82258652/HN.Social.Weibo</PackageProjectUrl>
     <Description>HN.Social.Weibo.Core</Description>
     <PackageTags></PackageTags>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
-  <PropertyGroup>
-    <Features>strict</Features>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\HN.Social.Weibo.Core.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\HN.Social.Weibo.Core.xml</DocumentationFile>
-  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="HN.Social.Weibo.Core.nuspec" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
