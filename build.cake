@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 // TOOLS / ADDINS
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -13,6 +13,7 @@ var msBuildPath = GetFiles(VSWhereLatest() + "/**/MSBuild.exe").FirstOrDefault()
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var verbosity = Argument("verbosity", Verbosity.Minimal);
+var version = Argument("version", "1.0.0");
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
@@ -38,8 +39,22 @@ Task("Restore-NuGet-Packages")
     NuGetRestore(solution);
 });
 
-Task("Build")
+Task("Version")
     .IsDependentOn("Restore-NuGet-Packages")
+    .Does(() =>
+{
+    var file = "./src/SolutionInfo.cs";
+    CreateAssemblyInfo(file, new AssemblyInfoSettings
+    {
+        Version = version,
+        FileVersion = version,
+        InformationalVersion = version,
+        Copyright = string.Format("Copyright © h82258652 2018 - {0}", DateTime.Now.Year)
+    });
+});
+
+Task("Build")
+    .IsDependentOn("Version")
     .Does(() =>
 {
     if(IsRunningOnWindows())
@@ -62,12 +77,26 @@ Task("Build")
     }
 });
 
+Task("Package")
+    .IsDependentOn("Build")
+    .Does(() => 
+{
+    var nugetPackSettings = new NuGetPackSettings
+    {
+        Version = version,
+        OutputDirectory = "./artifacts"
+    };
+
+    var nuspecFiles = GetFiles("./src/*/*.nuspec");
+    NuGetPack(nuspecFiles, nugetPackSettings);
+});
+
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Build");
+    .IsDependentOn("Package");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
