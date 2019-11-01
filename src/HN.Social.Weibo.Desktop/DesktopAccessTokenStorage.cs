@@ -5,7 +5,7 @@ using Plugin.Settings.Abstractions;
 
 namespace HN.Social.Weibo
 {
-    public class AccessTokenStorage : IAccessTokenStorage
+    public class DesktopAccessTokenStorage : IAccessTokenStorage
     {
         private const string WeiboFileName = "weibo";
         private static readonly ISettings Settings = CrossSettings.Current;

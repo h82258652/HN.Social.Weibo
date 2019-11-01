@@ -28,16 +28,6 @@ namespace HN.Social.Weibo
             return builder;
         }
 
-        public static IWeiboClientBuilder UseDefaultAccessTokenStorage(this IWeiboClientBuilder builder)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            return builder.UseAccessTokenStorage<AccessTokenStorage>();
-        }
-
         public static IWeiboClientBuilder WithConfig(this IWeiboClientBuilder builder, string appKey, string appSecret, string redirectUri)
         {
             if (builder == null)

@@ -5,6 +5,16 @@ namespace HN.Social.Weibo
 {
     public static class WeiboClientBuilderUwpExtensions
     {
+        public static IWeiboClientBuilder UseDefaultAccessTokenStorage(this IWeiboClientBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            return builder.UseAccessTokenStorage<UwpAccessTokenStorage>();
+        }
+
         public static IWeiboClientBuilder UseDefaultAuthorizationProvider(this IWeiboClientBuilder builder)
         {
             if (builder == null)
