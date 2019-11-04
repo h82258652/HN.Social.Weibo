@@ -37,7 +37,7 @@ namespace DesktopDemo
         private async void GetCurrentUserInfoButton_Click(object sender, RoutedEventArgs e)
         {
             var userInfo = await _client.GetCurrentUserAsync();
-            if (userInfo.ErrorCode == 0)
+            if (!userInfo.Success())
             {
                 MessageBox.Show(userInfo.ErrorMessage);
                 return;
