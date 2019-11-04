@@ -15,7 +15,7 @@ namespace HN.Social.Weibo
             Services
                 .AddHttpClient(Constants.HttpClientName, client =>
                 {
-                    client.BaseAddress = new Uri(Constants.WeiboUrlBase);
+                    client.BaseAddress = new Uri(Constants.WeiboApiUrlBase);
                 })
                 .ConfigurePrimaryHttpMessageHandler(serviceProvider => serviceProvider.GetRequiredService<WeiboHttpClientHandler>());
             Services.AddTransient<SignInManager>();

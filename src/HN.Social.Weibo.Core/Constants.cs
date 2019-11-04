@@ -4,6 +4,6 @@
     {
         public const string HttpClientName = "Weibo";
 
-        public const string WeiboUrlBase = "https://api.weibo.com/2";
+        public const string WeiboApiUrlBase = "https://api.weibo.com/2";
     }
 }
