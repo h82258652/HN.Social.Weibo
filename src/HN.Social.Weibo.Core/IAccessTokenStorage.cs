@@ -12,8 +12,16 @@ namespace HN.Social.Weibo
         /// </summary>
         void Clear();
 
+        /// <summary>
+        /// 读取存储的 <see cref="AccessToken" />。
+        /// </summary>
+        /// <returns>存储的 <see cref="AccessToken" />。</returns>
         AccessToken Load();
 
+        /// <summary>
+        /// 保存 <see cref="AccessToken" />。
+        /// </summary>
+        /// <param name="accessToken"><see cref="AccessToken" /> 对象。</param>
         void Save(AccessToken accessToken);
     }
 }
