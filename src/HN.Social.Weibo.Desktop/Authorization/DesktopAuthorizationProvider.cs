@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.Options;
@@ -7,7 +8,7 @@ namespace HN.Social.Weibo.Authorization
 {
     public class DesktopAuthorizationProvider : AuthorizationProviderBase
     {
-        public DesktopAuthorizationProvider(IOptions<WeiboOptions> weiboOptionsAccesser) : base(weiboOptionsAccesser)
+        public DesktopAuthorizationProvider(IHttpClientFactory httpClientFactory, IOptions<WeiboOptions> weiboOptionsAccesser) : base(httpClientFactory, weiboOptionsAccesser)
         {
         }
 

@@ -13,7 +13,7 @@ namespace HN.Social.Weibo.Http
     {
         private readonly SignInManager _signInManager;
 
-        internal WeiboHttpClientHandler(SignInManager signInManager) : base(new HttpClientHandler())
+        public WeiboHttpClientHandler(SignInManager signInManager) : base(new HttpClientHandler())
         {
             _signInManager = signInManager;
         }
@@ -40,7 +40,7 @@ namespace HN.Social.Weibo.Http
 
             return response;
         }
-
+        
         [DebuggerStepThrough]
         private async Task CheckResponseErrorCodeAsync(HttpResponseMessage response)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using HN.Social.Weibo.Authorization;
+using HN.Social.Weibo.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -10,7 +11,14 @@ namespace HN.Social.Weibo
         public WeiboClientBuilder()
         {
             Services = new ServiceCollection();
-            Services.AddSingleton<IWeiboClient, WeiboClient>();
+            Services.AddTransient<WeiboHttpClientHandler>();
+            Services
+                .AddHttpClient(Constants.HttpClientName, client =>
+                {
+                    client.BaseAddress = new Uri(Constants.WeiboUrlBase);
+                })
+                .ConfigurePrimaryHttpMessageHandler(serviceProvider => serviceProvider.GetRequiredService<WeiboHttpClientHandler>());
+            Services.AddTransient<SignInManager>();
         }
 
         public IServiceCollection Services { get; }
@@ -31,7 +39,7 @@ namespace HN.Social.Weibo
                 throw new Exception("未配置 AccessToken 存储");
             }
 
-            return serviceProvider.GetRequiredService<IWeiboClient>();
+            return ActivatorUtilities.CreateInstance<WeiboClient>(serviceProvider);
         }
     }
 }
