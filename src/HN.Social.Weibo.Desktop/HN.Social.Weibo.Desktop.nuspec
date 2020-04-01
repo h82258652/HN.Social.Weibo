@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>HN.Social.Weibo.Desktop</description>
     <tags></tags>
+    <repository type="git" url="https://github.com/h82258652/HN.Social.Weibo" />
     <dependencies>
       <dependency id="HN.Social.Weibo.Core" version="$version$" />
       <dependency id="Xam.Plugins.Settings" version="3.1.1" />

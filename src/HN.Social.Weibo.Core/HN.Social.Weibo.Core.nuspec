@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>HN.Social.Weibo.Core</description>
     <tags></tags>
+    <repository type="git" url="https://github.com/h82258652/HN.Social.Weibo" />
     <dependencies>
       <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" />
       <dependency id="Microsoft.Extensions.DependencyInjection" version="3.1.3" />
