@@ -13,7 +13,7 @@ var msBuildPath = GetFiles(VSWhereLatest() + "/**/MSBuild.exe").FirstOrDefault()
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var verbosity = Argument("verbosity", Verbosity.Minimal);
-var version = Argument("version", "1.0.0");
+var version = Argument("version", "1.0.1");
 
 //////////////////////////////////////////////////////////////////////
 // PREPARATION
@@ -85,7 +85,7 @@ Task("Package")
     {
         Version = version,
         OutputDirectory = "./artifacts",
-        Repository = new NuGetRepository 
+        Repository = new NuGetRepository
         {
             Type = "git",
             Url = "https://github.com/h82258652/HN.Social.Weibo"
