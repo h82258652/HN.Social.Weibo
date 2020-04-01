@@ -1,4 +1,5 @@
 ﻿using HN.Social.Weibo.Models;
+using JetBrains.Annotations;
 
 namespace HN.Social.Weibo
 {
@@ -16,12 +17,13 @@ namespace HN.Social.Weibo
         /// 读取存储的 <see cref="AccessToken" />。
         /// </summary>
         /// <returns>存储的 <see cref="AccessToken" />。</returns>
-        AccessToken Load();
+        [CanBeNull]
+        AccessToken? Load();
 
         /// <summary>
         /// 保存 <see cref="AccessToken" />。
         /// </summary>
         /// <param name="accessToken"><see cref="AccessToken" /> 对象。</param>
-        void Save(AccessToken accessToken);
+        void Save([NotNull] AccessToken accessToken);
     }
 }

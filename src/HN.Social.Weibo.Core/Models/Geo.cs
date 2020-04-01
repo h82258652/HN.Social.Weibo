@@ -1,13 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace HN.Social.Weibo.Models
 {
+    /// <summary>
+    /// 地理信息。
+    /// </summary>
     public class Geo
     {
-        [JsonProperty("type")]
+        /// <summary>
+        /// 类型。
+        /// </summary>
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("coordinates")]
+        /// <summary>
+        /// 坐标。
+        /// </summary>
+        [JsonPropertyName("coordinates")]
         public double[] Coordinates { get; set; }
     }
 }

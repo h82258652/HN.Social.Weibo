@@ -1,25 +1,41 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Windows.Foundation;
 using Windows.Security.Authentication.Web;
+using JetBrains.Annotations;
 
 namespace HN.Social.Weibo.Authorization
 {
+    /// <summary>
+    /// Windows 应用商店端授权提供者。
+    /// </summary>
     public class UwpAuthorizationProvider : AuthorizationProviderBase
     {
-        public UwpAuthorizationProvider(IHttpClientFactory httpClientFactory, IOptions<WeiboOptions> weiboOptionsAccesser) : base(httpClientFactory, weiboOptionsAccesser)
+        /// <summary>
+        /// 初始化 <see cref="UwpAuthorizationProvider" /> 类的新实例。
+        /// </summary>
+        /// <param name="httpClientFactory"><see cref="HttpClient" /> 工厂。</param>
+        /// <param name="weiboOptionsAccesser"><see cref="WeiboOptions" /> 实例的访问。</param>
+        /// <param name="serializerOptionsAccesser"><see cref="JsonSerializerOptions" /> 实例的访问。</param>
+        public UwpAuthorizationProvider(
+            [NotNull] IHttpClientFactory httpClientFactory, 
+            [NotNull] IOptions<WeiboOptions> weiboOptionsAccesser,
+            [NotNull] IOptions<JsonSerializerOptions> serializerOptionsAccesser) 
+            : base(httpClientFactory, weiboOptionsAccesser, serializerOptionsAccesser)
         {
         }
 
+        /// <inheritdoc />
         protected override async Task<string> GetAuthorizationCodeAsync(Uri authorizationUri, Uri callbackUri)
         {
-            var authorizationResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, authorizationUri, callbackUri);
-            switch (authorizationResult.ResponseStatus)
+            var authenticationResult = await WebAuthenticationBroker.AuthenticateAsync(WebAuthenticationOptions.None, authorizationUri, callbackUri);
+            switch (authenticationResult.ResponseStatus)
             {
                 case WebAuthenticationStatus.Success:
-                    var responseUri = new Uri(authorizationResult.ResponseData, UriKind.Absolute);
+                    var responseUri = new Uri(authenticationResult.ResponseData, UriKind.Absolute);
                     return new WwwFormUrlDecoder(responseUri.Query).GetFirstValueByName("code");
 
                 case WebAuthenticationStatus.UserCancel:

@@ -7,6 +7,7 @@ using Plugin.Settings.Abstractions;
 
 namespace HN.Social.Weibo
 {
+    /// <inheritdoc />
     public class DesktopAccessTokenStorage : IAccessTokenStorage
     {
         private const string AccessTokenKey = "AccessToken";
@@ -15,6 +16,7 @@ namespace HN.Social.Weibo
         private const string WeiboFileName = "weibo";
         private static readonly ISettings Settings = CrossSettings.Current;
 
+        /// <inheritdoc />
         public void Clear()
         {
             Settings.Remove(ExpiresAtKey, WeiboFileName);
@@ -22,7 +24,8 @@ namespace HN.Social.Weibo
             Settings.Remove(AccessTokenKey, WeiboFileName);
         }
 
-        public AccessToken Load()
+        /// <inheritdoc />
+        public AccessToken? Load()
         {
             try
             {
@@ -47,6 +50,7 @@ namespace HN.Social.Weibo
             }
         }
 
+        /// <inheritdoc />
         public void Save(AccessToken accessToken)
         {
             if (accessToken == null)

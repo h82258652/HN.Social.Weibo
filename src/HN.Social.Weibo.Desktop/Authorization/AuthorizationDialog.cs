@@ -1,38 +1,52 @@
 ﻿using System;
 using System.Web;
 using System.Windows.Forms;
+using JetBrains.Annotations;
 
 namespace HN.Social.Weibo.Authorization
 {
+    /// <summary>
+    /// 授权对话框。
+    /// </summary>
     public partial class AuthorizationDialog : Form
     {
-        private readonly Uri _authorizationUri;
+        private readonly Uri _authorizeUri;
 
-        public AuthorizationDialog(Uri authorizationUri)
+        /// <summary>
+        /// 初始化 <see cref="AuthorizationDialog" /> 类的新实例。
+        /// </summary>
+        /// <param name="authorizeUri">授权地址。</param>
+        public AuthorizationDialog([NotNull] Uri authorizeUri)
         {
-            if (authorizationUri == null)
+            if (authorizeUri == null)
             {
-                throw new ArgumentNullException(nameof(authorizationUri));
+                throw new ArgumentNullException(nameof(authorizeUri));
             }
 
-            _authorizationUri = authorizationUri;
+            _authorizeUri = authorizeUri;
 
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 授权码。
+        /// </summary>
         public string AuthorizationCode
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// 是否出现 Http 错误。
+        /// </summary>
         public bool IsHttpError { get; private set; }
 
         private void AuthorizationDialog_Shown(object sender, EventArgs e)
         {
             ((SHDocVw.WebBrowser)webBrowser.ActiveXInstance).NavigateError += WebBrowser_NavigateError;
 
-            webBrowser.Navigate(_authorizationUri);
+            webBrowser.Navigate(_authorizeUri);
         }
 
         private bool CheckUrlQuery(Uri url)

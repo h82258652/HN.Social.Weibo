@@ -1,9 +1,11 @@
 ﻿using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using HN.Social.Weibo;
 
 namespace UwpDemo
 {
@@ -20,6 +22,26 @@ namespace UwpDemo
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.UnhandledException += App_UnhandledException;
+        }
+
+        private async void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            if (e.Exception is WeiboException ex)
+            {
+                e.Handled = true;
+                if (ex is WeiboApiException apiException)
+                {
+                    var error = apiException.Error;
+                    await new MessageDialog($"错误代码：{error.ErrorCode}，错误消息：{error.ErrorMessage}").ShowAsync();
+                }
+                else
+                {
+                    await new MessageDialog(ex.Message).ShowAsync();
+                }
+
+                return;
+            }
         }
 
         /// <summary>

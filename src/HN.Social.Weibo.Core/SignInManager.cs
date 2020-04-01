@@ -1,30 +1,36 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using HN.Social.Weibo.Authorization;
 using HN.Social.Weibo.Models;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
+using Nito.AsyncEx;
 
 namespace HN.Social.Weibo
 {
     internal class SignInManager
     {
+        private static readonly AsyncLock AsyncLock = new AsyncLock();
         private readonly IAccessTokenStorage _accessTokenStorage;
         private readonly IAuthorizationProvider _authorizationProvider;
         private readonly WeiboOptions _weiboOptions;
 
         public SignInManager(
-            IOptions<WeiboOptions> weiboOptionsAccesser, 
-            IAuthorizationProvider authorizationProvider, 
-            IAccessTokenStorage accessTokenStorage)
+            IAccessTokenStorage accessTokenStorage,
+            IAuthorizationProvider authorizationProvider,
+            IOptions<WeiboOptions> weiboOptionsAccesser)
         {
-            _weiboOptions = weiboOptionsAccesser.Value;
-            _authorizationProvider = authorizationProvider;
             _accessTokenStorage = accessTokenStorage;
+            _authorizationProvider = authorizationProvider;
+            _weiboOptions = weiboOptionsAccesser.Value;
         }
 
         internal bool IsSignIn => GetAccessToken() != null;
 
-        internal AccessToken GetAccessToken()
+        [CanBeNull]
+        internal AccessToken? GetAccessToken()
         {
             var accessToken = _accessTokenStorage.Load();
             if (accessToken == null)
@@ -43,24 +49,42 @@ namespace HN.Social.Weibo
 
         internal async Task<AccessToken> SignInAndGetAccessTokenAsync()
         {
-            var accessToken = GetAccessToken();
-            if (accessToken != null)
+            using (await AsyncLock.LockAsync())
             {
+                var accessToken = GetAccessToken();
+                if (accessToken != null)
+                {
+                    return accessToken;
+                }
+
+                var requestTime = DateTime.Now;
+
+                var authorizeUrl = $"{Constants.AuthorizeUrl}?client_id={_weiboOptions.AppKey}&redirect_uri={HttpUtility.UrlEncode(_weiboOptions.RedirectUri)}";
+                if (_weiboOptions.Scope != null)
+                {
+                    authorizeUrl += $"&scope={HttpUtility.UrlEncode(_weiboOptions.Scope)}";
+                }
+
+                var authorizeUri = new Uri(authorizeUrl);
+                AuthorizeResult authorizeResult;
+                try
+                {
+                    authorizeResult = await _authorizationProvider.AuthorizeAsync(authorizeUri, new Uri(_weiboOptions.RedirectUri));
+                }
+                catch (HttpRequestException ex)
+                {
+                    throw new HttpErrorAuthorizationException(ex);
+                }
+
+                accessToken = new AccessToken
+                {
+                    ExpiresAt = requestTime.AddSeconds(authorizeResult.ExpiresIn).AddMinutes(-5),// 5 分钟用作缓冲
+                    UserId = long.Parse(authorizeResult.UserId),
+                    Value = authorizeResult.AccessToken
+                };
+                _accessTokenStorage.Save(accessToken);
                 return accessToken;
             }
-
-            var requestTime = DateTime.Now;
-            var authorizationUri = new Uri($"https://api.weibo.com/oauth2/authorize?client_id={_weiboOptions.AppKey}&redirect_uri={_weiboOptions.RedirectUri}");
-            var authorizationResult = await _authorizationProvider.AuthorizeAsync(authorizationUri, new Uri(_weiboOptions.RedirectUri));
-
-            accessToken = new AccessToken()
-            {
-                ExpiresAt = requestTime.AddSeconds(authorizationResult.ExpiresIn).AddMinutes(-5),// 5 分钟用作缓冲
-                UserId = authorizationResult.UserId,
-                Value = authorizationResult.AccessToken
-            };
-            _accessTokenStorage.Save(accessToken);
-            return accessToken;
         }
 
         internal Task SignInAsync()

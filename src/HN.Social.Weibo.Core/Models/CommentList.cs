@@ -1,25 +1,34 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace HN.Social.Weibo.Models
 {
-    public class CommentList : WeiboResult
+    /// <summary>
+    /// 评论列表。
+    /// </summary>
+    public class CommentList
     {
-        [JsonProperty("comments")]
+        /// <summary>
+        /// 评论。
+        /// </summary>
+        [JsonPropertyName("comments")]
         public Comment[] Comments { get; set; }
 
-        [JsonProperty("hasvisible")]
-        public bool HasVisible { get; set; }
-
-        [JsonProperty("previous_cursor")]
+        /// <summary>
+        /// 上一条游标。
+        /// </summary>
+        [JsonPropertyName("previous_cursor")]
         public long PreviousCursor { get; set; }
 
-        [JsonProperty("next_cursor")]
+        /// <summary>
+        /// 下一条游标。
+        /// </summary>
+        [JsonPropertyName("next_cursor")]
         public long NextCursor { get; set; }
 
-        [JsonProperty("total_number")]
+        /// <summary>
+        /// 总数。
+        /// </summary>
+        [JsonPropertyName("total_number")]
         public int TotalNumber { get; set; }
-
-        [JsonProperty("interval")]
-        public int Interval { get; set; }
     }
 }

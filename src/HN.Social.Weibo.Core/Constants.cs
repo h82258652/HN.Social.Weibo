@@ -1,9 +1,15 @@
 ﻿namespace HN.Social.Weibo
 {
-    public static class Constants
+    internal static class Constants
     {
-        public const string HttpClientName = "Weibo";
+        internal const string AccessTokenUrl = "https://api.weibo.com/oauth2/access_token";
 
-        public const string WeiboApiUrlBase = "https://api.weibo.com/2";
+        internal const string AuthorizeUrl = "https://api.weibo.com/oauth2/authorize";
+
+        internal const string HttpClientName = "Weibo";
+
+        internal const int UserRemoveAuthorizationCode = 21332;
+
+        internal const string WeiboApiUrlBase = "https://api.weibo.com/2";
     }
 }

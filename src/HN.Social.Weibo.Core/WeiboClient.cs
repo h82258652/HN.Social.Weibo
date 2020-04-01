@@ -1,30 +1,30 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
 
 namespace HN.Social.Weibo
 {
     internal class WeiboClient : IWeiboClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly JsonSerializerOptions _serializerOptions;
         private readonly SignInManager _signInManager;
 
         public WeiboClient(
-            IHttpClientFactory httpClientFactory, 
-            SignInManager signInManager)
+            IHttpClientFactory httpClientFactory,
+            SignInManager signInManager,
+            IOptions<JsonSerializerOptions> serializerOptionsAccesser)
         {
             _httpClientFactory = httpClientFactory;
             _signInManager = signInManager;
+            _serializerOptions = serializerOptionsAccesser.Value;
         }
 
         public bool IsSignIn => _signInManager.IsSignIn;
 
-        /// <summary>
-        /// 获取当前已登录的用户 Id。
-        /// </summary>
-        /// <exception cref="InvalidOperationException">用户未登录。</exception>
         public long UserId
         {
             get
@@ -41,11 +41,21 @@ namespace HN.Social.Weibo
 
         public Task<T> GetAsync<T>(string uri, CancellationToken cancellationToken = default)
         {
+            if (uri == null)
+            {
+                throw new ArgumentNullException(nameof(uri));
+            }
+
             return SendAsync<T>(new HttpRequestMessage(HttpMethod.Get, uri), cancellationToken);
         }
 
-        public Task<T> PostAsync<T>(string uri, HttpContent content, CancellationToken cancellationToken = default)
+        public Task<T> PostAsync<T>(string uri, HttpContent? content, CancellationToken cancellationToken = default)
         {
+            if (uri == null)
+            {
+                throw new ArgumentNullException(nameof(uri));
+            }
+
             return SendAsync<T>(new HttpRequestMessage(HttpMethod.Post, uri)
             {
                 Content = content
@@ -62,7 +72,7 @@ namespace HN.Social.Weibo
             var client = _httpClientFactory.CreateClient(Constants.HttpClientName);
             var response = await client.SendAsync(request, cancellationToken);
             var json = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<T>(json);
+            return JsonSerializer.Deserialize<T>(json, _serializerOptions);
         }
 
         public Task SignInAsync()

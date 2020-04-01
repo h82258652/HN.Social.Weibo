@@ -1,64 +1,64 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace HN.Social.Weibo.Models
 {
-    public class Comment : WeiboResult
+    /// <summary>
+    /// 评论。
+    /// </summary>
+    public class Comment
     {
         /// <summary>
-        /// 评论创建时间
+        /// 评论创建时间。
         /// </summary>
-        [JsonProperty("created_at")]
+        [JsonPropertyName("created_at")]
         public string CreatedAt { get; set; }
 
         /// <summary>
-        /// 评论的ID
+        /// 评论的ID。
         /// </summary>
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonProperty("rootid")]
-        public long RootId { get; set; }
-
-        [JsonProperty("floor_number")]
-        public int FloorNumber { get; set; }
-
         /// <summary>
-        /// 评论的内容
+        /// 评论的内容。
         /// </summary>
-        [JsonProperty("text")]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
 
-        [JsonProperty("disable_reply")]
-        public int DisableReply { get; set; }
+        /// <summary>
+        /// 评论的来源。
+        /// </summary>
+        [JsonPropertyName("source")]
+        public string? Source { get; set; }
 
         /// <summary>
-        /// 评论作者的用户信息字段
+        /// 评论作者的用户信息字段。
         /// </summary>
-        [JsonProperty("user")]
+        [JsonPropertyName("user")]
         public User User { get; set; }
 
         /// <summary>
-        /// 评论的MID
+        /// 评论的MID。
         /// </summary>
-        [JsonProperty("mid")]
+        [JsonPropertyName("mid")]
         public string Mid { get; set; }
 
         /// <summary>
-        /// 字符串型的评论ID
+        /// 字符串型的评论ID。
         /// </summary>
-        [JsonProperty("idstr")]
-        public string IdString { get; set; }
+        [JsonPropertyName("idstr")]
+        public string IdStr { get; set; }
 
         /// <summary>
-        /// 评论的微博信息字段
+        /// 评论的微博信息字段。
         /// </summary>
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public Status Status { get; set; }
 
-        [JsonProperty("reply_comment")]
-        public Comment ReplyComment { get; set; }
-
-        [JsonProperty("appKey")]
-        public string AppKey { get; set; }
+        /// <summary>
+        /// 评论来源评论，当本评论属于对另一评论的回复时返回此字段。
+        /// </summary>
+        [JsonPropertyName("reply_comment")]
+        public Comment? ReplyComment { get; set; }
     }
 }

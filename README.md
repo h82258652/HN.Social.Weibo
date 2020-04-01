@@ -1,26 +1,50 @@
 ﻿# HN.Social.Weibo
 新浪微博 .net API for Desktop and UWP  
-[![Build status](https://ci.appveyor.com/api/projects/status/rj3k3xgulnby9kw6?svg=true)](https://ci.appveyor.com/project/h82258652/hn-social-weibo)
-#### 版本要求
-Desktop：.net framework 4.6.1  
-UWP：16299
+[![Build status](https://github.com/h82258652/HN.Social.Weibo/workflows/CI/badge.svg)](https://github.com/h82258652/HN.Social.Weibo/workflows/CI/badge.svg)
 
-本文档编写于 **2019 年 01 月 22 日**
+| Package | Nuget | Requirement |
+| - | - | - |
+| HN.Social.Weibo.Core | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Core.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Core) | .Net Standard 2.0 or higher |
+| HN.Social.Weibo.Desktop | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Desktop.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Desktop) | .Net Framework 4.6.1 or higher |
+| HN.Social.Weibo.Uwp | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Uwp.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Uwp) | UWP 16299 or higher |
 
-已封装基本的 API，后续会补充其余 API 的封装，没有的 API 可使用扩展方法来封装
+本文档编写于 **2020 年 4 月 1 日**
+
+已封装基本的 API，没有的 API 可使用扩展方法来封装  
+官方 API 参考  
+https://open.weibo.com/wiki/%E5%BE%AE%E5%8D%9AAPI  
+https://open.weibo.com/apps/你的应用Id/privilege  
 
 # 使用方法：
-### 1、创建 WeiboClientBuilder，执行 WithConfig 方法，并设置验证 Provider 和 AccessToken 的存储服务。
+### 1、初始化
 ```C#
 IWeiboClient client = new WeiboClientBuilder()
-    .WithConfig(appKey: "393209958", appSecret: "3c2387aa56497a4ed187f146afc8cb34", redirectUri: "http://bing.coding.io/")
-    .UseDefaultAuthorizationProvider()
-    .UseDefaultAccessTokenStorage()
+    .WithConfig(options =>
+    {
+        options.AppKey = "";// 应用信息 - 基本信息 - 应用基本信息 - App Key
+        options.AppSecret = "";// 应用信息 - 基本信息 - 应用基本信息 - App Secret
+        options.RedirectUri = "";// 应用信息 - 高级信息 - OAuth2.0授权设置 - 授权回调页
+        options.Scope = "all";// 可选，参考 https://open.weibo.com/wiki/Scope
+    })
+    .UseDefaultAuthorizationProvider()// 使用平台默认授权器
+    .UseDefaultAccessTokenStorage()// 使用平台默认 access token 存储
     .Build();
 ```
 
-### 2、调用方法
-#### 2.1、登入
+### 2、处理错误
+
+除初始化配置缺失的情况外，正常情况下本库所抛出的异常基类均为 ``WeiboException``。建议全局捕获处理。  
+
+Desktop 参考：  
+https://github.com/h82258652/HN.Social.Weibo/blob/master/demo/DesktopDemo/App.xaml.cs
+
+UWP 参考：  
+https://github.com/h82258652/HN.Social.Weibo/blob/master/demo/UwpDemo/App.xaml.cs
+
+若调用微博接口返回错误，则会转为 ``WeiboApiException``（继承自 ``WeiboException``）异常抛出，开发者可以根据错误码进行处理。
+
+### 3、调用方法
+#### 3.1、登入
 ```C#
 try
 {
@@ -28,68 +52,35 @@ try
 }
 catch (UserCancelAuthorizationException)
 {
-    // TODO 取消了授权
+    // TODO 用户取消了授权
 }
-catch (Exception ex) when (ex is HttpErrorAuthorizationException || ex is HttpRequestException)
+catch (HttpErrorAuthorizationException)
 {
-    // TODO 网络错误
+    // TODO 授权期间网络错误
 }
 ```
-#### 2.2、登出
+#### 3.2、登出
 ```C#
 await client.SignOutAsync();
 ```
-#### 2.3、获取是否登入
+#### 3.3、获取是否登入
 ```C#
 bool isSignIn = client.IsSignIn;
 ```
-#### 2.4、获取用户信息
+#### 3.4、获取用户信息
 ```C#
-try
-{
-    var userInfo = await client.GetCurrentUserInfoAsync();
-    if (userInfo.Success())
-    {
-        // TODO 获取成功
-    }
-    else
-    {
-        // TODO 获取失败
-    }
-}
-catch (HttpRequestException)
-{
-    // TODO 网络错误
-}
+var user = await client.GetUserAsync(client.UserId);
 ```
-#### 2.5、分享（可不先登入，第一次调用会自动调起）
+#### 3.5、分享（[参考](https://open.weibo.com/wiki/2/statuses/share)）
 ```C#
-try
-{
-    var status = await client.ShareAsync("测试 https://wpdn.bohan.co/az/hprichbg/rb/MandelaMonument_EN-US8903823453_1920x1080.jpg");
-    if (status.Success())
-    {
-        // TODO 分享成功
-    }
-    else
-    {
-        // TODO 分享失败
-    }
-}
-catch (HttpRequestException)
-{
-    // TODO 网络错误
-}
+var status = await client.ShareAsync("测试 https://wpdn.bohan.co/az/hprichbg/rb/MandelaMonument_EN-US8903823453_1920x1080.jpg");
 ```
 
 ### 详细请参考 Demo 的代码
 
-返回的错误码请参考微博的文档
+返回的错误码请参考微博的文档  
 http://open.weibo.com/wiki/Error_code
 
 ### 后续计划
 
-1.封装更多接口  
-2.补充文档注释  
-3.添加 HttpMessageHandler 的注入  
-4.制作 nuget 包
+1.封装更多常用接口  

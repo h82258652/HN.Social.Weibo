@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Net.Http;
 using HN.Social.Weibo;
-using HN.Social.Weibo.Models;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using HN.Social.Weibo.Authorization;
@@ -15,7 +13,13 @@ namespace UwpDemo
         public MainPage()
         {
             _client = new WeiboClientBuilder()
-                .WithConfig(appKey: "393209958", appSecret: "3c2387aa56497a4ed187f146afc8cb34", redirectUri: "http://bing.coding.io/")
+                .WithConfig(options =>
+                {
+                    options.AppKey = "393209958";
+                    options.AppSecret = "3c2387aa56497a4ed187f146afc8cb34";
+                    options.RedirectUri = "http://bing.coding.io/";
+                    options.Scope = "all";// optional
+                })
                 .UseDefaultAuthorizationProvider()
                 .UseDefaultAccessTokenStorage()
                 .Build();
@@ -37,20 +41,14 @@ namespace UwpDemo
 
         private async void GetCurrentUserInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            var userInfo = await _client.GetCurrentUserAsync();
-            if (!userInfo.Success())
-            {
-                await new MessageDialog(userInfo.ErrorMessage).ShowAsync();
-                return;
-            }
-
-            await new MessageDialog("昵称：" + userInfo.Nickname).ShowAsync();
+            var user = await _client.GetUserAsync(_client.UserId);
+            await new MessageDialog("昵称：" + user.ScreenName).ShowAsync();
         }
 
         private async void SendStatusButton_Click(object sender, RoutedEventArgs e)
         {
             var status = await _client.ShareAsync("测试 https://wpdn.bohan.co/az/hprichbg/rb/MandelaMonument_EN-US8903823453_1920x1080.jpg");
-            await new MessageDialog(status.Success() ? "发送成功" : status.ErrorMessage).ShowAsync();
+            await new MessageDialog($"发送成功，内容：{status.Text}").ShowAsync();
         }
 
         private async void SignInButton_Click(object sender, RoutedEventArgs e)
@@ -61,12 +59,16 @@ namespace UwpDemo
             }
             catch (UserCancelAuthorizationException)
             {
-                await new MessageDialog("取消了授权").ShowAsync();
+                await new MessageDialog("用户取消了授权").ShowAsync();
+                return;
             }
-            catch (Exception ex) when (ex is HttpErrorAuthorizationException || ex is HttpRequestException)
+            catch (HttpErrorAuthorizationException)
             {
-                await new MessageDialog("网络错误").ShowAsync();
+                await new MessageDialog("授权期间网络异常").ShowAsync();
+                return;
             }
+
+            await new MessageDialog("登录成功").ShowAsync();
         }
 
         private async void SignOutButton_Click(object sender, RoutedEventArgs e)

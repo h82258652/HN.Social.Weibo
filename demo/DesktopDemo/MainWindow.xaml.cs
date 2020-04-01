@@ -1,9 +1,6 @@
-﻿using System;
-using System.Net.Http;
-using System.Windows;
+﻿using System.Windows;
 using HN.Social.Weibo;
 using HN.Social.Weibo.Authorization;
-using HN.Social.Weibo.Models;
 
 namespace DesktopDemo
 {
@@ -14,7 +11,13 @@ namespace DesktopDemo
         public MainWindow()
         {
             _client = new WeiboClientBuilder()
-                .WithConfig(appKey: "393209958", appSecret: "3c2387aa56497a4ed187f146afc8cb34", redirectUri: "http://bing.coding.io/")
+                .WithConfig(options =>
+                {
+                    options.AppKey = "393209958";
+                    options.AppSecret = "3c2387aa56497a4ed187f146afc8cb34";
+                    options.RedirectUri = "http://bing.coding.io/";
+                    options.Scope = "all";// optional
+                })
                 .UseDefaultAuthorizationProvider()
                 .UseDefaultAccessTokenStorage()
                 .Build();
@@ -36,20 +39,14 @@ namespace DesktopDemo
 
         private async void GetCurrentUserInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            var userInfo = await _client.GetCurrentUserAsync();
-            if (!userInfo.Success())
-            {
-                MessageBox.Show(userInfo.ErrorMessage);
-                return;
-            }
-
-            MessageBox.Show("昵称：" + userInfo.Nickname);
+            var user = await _client.GetUserAsync(_client.UserId);
+            MessageBox.Show("昵称：" + user.ScreenName);
         }
 
         private async void SendStatusButton_Click(object sender, RoutedEventArgs e)
         {
             var status = await _client.ShareAsync("测试 https://wpdn.bohan.co/az/hprichbg/rb/MandelaMonument_EN-US8903823453_1920x1080.jpg");
-            MessageBox.Show(status.Success() ? "发送成功" : status.ErrorMessage);
+            MessageBox.Show($"发送成功，内容：{status.Text}");
         }
 
         private async void SignInButton_Click(object sender, RoutedEventArgs e)
@@ -60,12 +57,16 @@ namespace DesktopDemo
             }
             catch (UserCancelAuthorizationException)
             {
-                MessageBox.Show("取消了授权");
+                MessageBox.Show("用户取消了授权");
+                return;
             }
-            catch (Exception ex) when (ex is HttpErrorAuthorizationException || ex is HttpRequestException)
+            catch (HttpErrorAuthorizationException)
             {
-                MessageBox.Show("网络错误");
+                MessageBox.Show("授权期间网络异常");
+                return;
             }
+
+            MessageBox.Show("登录成功");
         }
 
         private async void SignOutButton_Click(object sender, RoutedEventArgs e)
