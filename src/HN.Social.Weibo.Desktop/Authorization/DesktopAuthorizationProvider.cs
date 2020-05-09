@@ -17,13 +17,13 @@ namespace HN.Social.Weibo.Authorization
         /// 初始化 <see cref="DesktopAuthorizationProvider" /> 类的新实例。
         /// </summary>
         /// <param name="httpClientFactory"><see cref="HttpClient" /> 工厂。</param>
-        /// <param name="weiboOptionsAccesser"><see cref="WeiboOptions" /> 实例的访问。</param>
-        /// <param name="serializerOptionsAccesser"><see cref="JsonSerializerOptions" /> 实例的访问。</param>
+        /// <param name="weiboOptionsAccessor"><see cref="WeiboOptions" /> 实例的访问。</param>
+        /// <param name="serializerOptionsAccessor"><see cref="JsonSerializerOptions" /> 实例的访问。</param>
         public DesktopAuthorizationProvider(
             [NotNull] IHttpClientFactory httpClientFactory, 
-            [NotNull] IOptions<WeiboOptions> weiboOptionsAccesser,
-            [NotNull] IOptions<JsonSerializerOptions> serializerOptionsAccesser) 
-            : base(httpClientFactory, weiboOptionsAccesser, serializerOptionsAccesser)
+            [NotNull] IOptions<WeiboOptions> weiboOptionsAccessor,
+            [NotNull] IOptions<JsonSerializerOptions> serializerOptionsAccessor) 
+            : base(httpClientFactory, weiboOptionsAccessor, serializerOptionsAccessor)
         {
         }
 

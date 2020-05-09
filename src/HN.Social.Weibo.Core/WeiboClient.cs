@@ -16,11 +16,11 @@ namespace HN.Social.Weibo
         public WeiboClient(
             IHttpClientFactory httpClientFactory,
             SignInManager signInManager,
-            IOptions<JsonSerializerOptions> serializerOptionsAccesser)
+            IOptions<JsonSerializerOptions> serializerOptionsAccessor)
         {
             _httpClientFactory = httpClientFactory;
             _signInManager = signInManager;
-            _serializerOptions = serializerOptionsAccesser.Value;
+            _serializerOptions = serializerOptionsAccessor.Value;
         }
 
         public bool IsSignIn => _signInManager.IsSignIn;

@@ -19,14 +19,14 @@ namespace HN.Social.Weibo.Http
         public WeiboHttpClientHandler(
             SignInManager signInManager,
             IAccessTokenStorage accessTokenStorage,
-            IOptions<JsonSerializerOptions> serializerOptionsAccesser,
-            IOptions<WeiboOptions> weiboOptionsAccesser)
+            IOptions<JsonSerializerOptions> serializerOptionsAccessor,
+            IOptions<WeiboOptions> weiboOptionsAccessor)
             : base(new HttpClientHandler())
         {
             _signInManager = signInManager;
             _accessTokenStorage = accessTokenStorage;
-            _serializerOptions = serializerOptionsAccesser.Value;
-            _weiboOptions = weiboOptionsAccesser.Value;
+            _serializerOptions = serializerOptionsAccessor.Value;
+            _weiboOptions = weiboOptionsAccessor.Value;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

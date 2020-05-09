@@ -20,11 +20,11 @@ namespace HN.Social.Weibo
         public SignInManager(
             IAccessTokenStorage accessTokenStorage,
             IAuthorizationProvider authorizationProvider,
-            IOptions<WeiboOptions> weiboOptionsAccesser)
+            IOptions<WeiboOptions> weiboOptionsAccessor)
         {
             _accessTokenStorage = accessTokenStorage;
             _authorizationProvider = authorizationProvider;
-            _weiboOptions = weiboOptionsAccesser.Value;
+            _weiboOptions = weiboOptionsAccessor.Value;
         }
 
         internal bool IsSignIn => GetAccessToken() != null;
