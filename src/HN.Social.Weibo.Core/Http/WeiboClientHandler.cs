@@ -9,19 +9,18 @@ using Microsoft.Extensions.Options;
 
 namespace HN.Social.Weibo.Http
 {
-    internal class WeiboHttpClientHandler : DelegatingHandler
+    internal class WeiboClientHandler : DelegatingHandler
     {
         private readonly IAccessTokenStorage _accessTokenStorage;
         private readonly JsonSerializerOptions _serializerOptions;
         private readonly SignInManager _signInManager;
         private readonly WeiboOptions _weiboOptions;
 
-        public WeiboHttpClientHandler(
+        public WeiboClientHandler(
             SignInManager signInManager,
             IAccessTokenStorage accessTokenStorage,
             IOptions<JsonSerializerOptions> serializerOptionsAccessor,
             IOptions<WeiboOptions> weiboOptionsAccessor)
-            : base(new HttpClientHandler())
         {
             _signInManager = signInManager;
             _accessTokenStorage = accessTokenStorage;

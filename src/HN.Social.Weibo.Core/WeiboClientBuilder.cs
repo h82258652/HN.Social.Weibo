@@ -17,13 +17,7 @@ namespace HN.Social.Weibo
         public WeiboClientBuilder()
         {
             Services = new ServiceCollection();
-            Services.AddTransient<WeiboHttpClientHandler>();
-            Services
-                .AddHttpClient(Constants.HttpClientName, client =>
-                {
-                    client.BaseAddress = new Uri(Constants.WeiboApiUrlBase);
-                })
-                .ConfigurePrimaryHttpMessageHandler(serviceProvider => serviceProvider.GetRequiredService<WeiboHttpClientHandler>());
+            ConfigureHttp(Services);
             Services.AddTransient<SignInManager>();
             Services.Configure<JsonSerializerOptions>(options =>
             {
@@ -54,6 +48,20 @@ namespace HN.Social.Weibo
             }
 
             return ActivatorUtilities.CreateInstance<WeiboClient>(serviceProvider);
+        }
+
+        private void ConfigureHttp(IServiceCollection services)
+        {
+            services.AddTransient<WeiboClientHandler>();
+            services.AddHttpClient(Constants.HttpClientName, client =>
+            {
+                client.BaseAddress = new Uri(Constants.WeiboApiUrlBase);
+            }).ConfigureHttpMessageHandlerBuilder(builder =>
+            {
+                var weiboClientHandler = builder.Services.GetRequiredService<WeiboClientHandler>();
+
+                builder.AdditionalHandlers.Add(weiboClientHandler);
+            });
         }
     }
 }
