@@ -7,11 +7,17 @@ using Microsoft.Extensions.Options;
 
 namespace HN.Social.Weibo
 {
+    /// <inheritdoc />
     public class EfCoreAccessTokenStorage<TDbContext> : IAccessTokenStorage where TDbContext : DbContext, IWeiboDbContext
     {
         private readonly TDbContext _context;
         private readonly WeiboOptions _weiboOptions;
 
+        /// <summary>
+        /// 初始化 <see cref="EfCoreAccessTokenStorage{TDbContext}" /> 类的新实例。
+        /// </summary>
+        /// <param name="context">Entity Framework Core 数据上下文。</param>
+        /// <param name="weiboOptionsAccessor"><see cref="WeiboOptions" /> 实例的访问。</param>
         public EfCoreAccessTokenStorage(
             [NotNull] TDbContext context, 
             [NotNull] IOptions<WeiboOptions> weiboOptionsAccessor)
@@ -20,6 +26,7 @@ namespace HN.Social.Weibo
             _weiboOptions = weiboOptionsAccessor.Value;
         }
 
+        /// <inheritdoc />
         public void Clear()
         {
             var existAccessToken = _context
@@ -30,6 +37,7 @@ namespace HN.Social.Weibo
             _context.SaveChanges();
         }
 
+        /// <inheritdoc />
         public AccessToken? Load()
         {
             var accessToken = _context
@@ -50,6 +58,7 @@ namespace HN.Social.Weibo
             };
         }
 
+        /// <inheritdoc />
         public void Save(AccessToken accessToken)
         {
             if (accessToken == null)
