@@ -9,24 +9,23 @@ using Microsoft.Extensions.Options;
 
 namespace HN.Social.Weibo.Http
 {
-    internal class WeiboHttpClientHandler : DelegatingHandler
+    internal class WeiboClientHandler : DelegatingHandler
     {
         private readonly IAccessTokenStorage _accessTokenStorage;
         private readonly JsonSerializerOptions _serializerOptions;
         private readonly SignInManager _signInManager;
         private readonly WeiboOptions _weiboOptions;
 
-        public WeiboHttpClientHandler(
+        public WeiboClientHandler(
             SignInManager signInManager,
             IAccessTokenStorage accessTokenStorage,
-            IOptions<JsonSerializerOptions> serializerOptionsAccesser,
-            IOptions<WeiboOptions> weiboOptionsAccesser)
-            : base(new HttpClientHandler())
+            IOptions<JsonSerializerOptions> serializerOptionsAccessor,
+            IOptions<WeiboOptions> weiboOptionsAccessor)
         {
             _signInManager = signInManager;
             _accessTokenStorage = accessTokenStorage;
-            _serializerOptions = serializerOptionsAccesser.Value;
-            _weiboOptions = weiboOptionsAccesser.Value;
+            _serializerOptions = serializerOptionsAccessor.Value;
+            _weiboOptions = weiboOptionsAccessor.Value;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

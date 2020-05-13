@@ -22,31 +22,31 @@ namespace HN.Social.Weibo.Authorization
         /// 初始化 <see cref="AuthorizationProviderBase" /> 类的新实例。
         /// </summary>
         /// <param name="httpClientFactory"><see cref="HttpClient" /> 工厂。</param>
-        /// <param name="weiboOptionsAccesser"><see cref="WeiboOptions" /> 实例的访问。</param>
-        /// <param name="serializerOptionsAccesser"><see cref="JsonSerializerOptions" /> 实例的访问。</param>
+        /// <param name="weiboOptionsAccessor"><see cref="WeiboOptions" /> 实例的访问。</param>
+        /// <param name="serializerOptionsAccessor"><see cref="JsonSerializerOptions" /> 实例的访问。</param>
         protected AuthorizationProviderBase(
             [NotNull] IHttpClientFactory httpClientFactory,
-            [NotNull] IOptions<WeiboOptions> weiboOptionsAccesser,
-            [NotNull] IOptions<JsonSerializerOptions> serializerOptionsAccesser)
+            [NotNull] IOptions<WeiboOptions> weiboOptionsAccessor,
+            [NotNull] IOptions<JsonSerializerOptions> serializerOptionsAccessor)
         {
             if (httpClientFactory == null)
             {
                 throw new ArgumentNullException(nameof(httpClientFactory));
             }
 
-            if (weiboOptionsAccesser == null)
+            if (weiboOptionsAccessor == null)
             {
-                throw new ArgumentNullException(nameof(weiboOptionsAccesser));
+                throw new ArgumentNullException(nameof(weiboOptionsAccessor));
             }
 
-            if (serializerOptionsAccesser == null)
+            if (serializerOptionsAccessor == null)
             {
-                throw new ArgumentNullException(nameof(serializerOptionsAccesser));
+                throw new ArgumentNullException(nameof(serializerOptionsAccessor));
             }
 
             _httpClientFactory = httpClientFactory;
-            _weiboOptions = weiboOptionsAccesser.Value;
-            _serializerOptions = serializerOptionsAccesser.Value;
+            _weiboOptions = weiboOptionsAccessor.Value;
+            _serializerOptions = serializerOptionsAccessor.Value;
         }
 
         /// <inheritdoc />
