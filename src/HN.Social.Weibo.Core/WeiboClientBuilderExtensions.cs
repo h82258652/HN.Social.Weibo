@@ -91,7 +91,7 @@ namespace HN.Social.Weibo
         /// <param name="redirectUri">授权回调地址，站外应用需与设置的回调地址一致，站内应用需填写canvas page的地址。</param>
         /// <param name="scope">申请scope权限所需参数，可一次申请多个scope权限，用逗号分隔。</param>
         /// <param name="isAutoSignInEnabled">是否在调用微博 API 时自动执行授权操作。默认 <see langword="true" />。</param>
-        /// <returns></returns>
+        /// <returns><see cref="IWeiboClientBuilder" /> 实例。</returns>
         public static IWeiboClientBuilder WithConfig(
             [NotNull] this IWeiboClientBuilder builder,
             [NotNull] string appKey,
