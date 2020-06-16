@@ -20,6 +20,6 @@ namespace HN.Social.Weibo.Models
         /// <summary>
         /// Access token 的值。
         /// </summary>
-        public string Value { get; set; }
+        public string Value { get; set; } = default!;
     }
 }
