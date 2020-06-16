@@ -23,7 +23,7 @@ namespace HN.Social.Weibo
         /// <summary>
         /// 保存 <see cref="AccessToken" />。
         /// </summary>
-        /// <param name="accessToken"><see cref="AccessToken" /> 对象。</param>
+        /// <param name="accessToken"><see cref="AccessToken" /> 实例。</param>
         void Save([NotNull] AccessToken accessToken);
     }
 }
