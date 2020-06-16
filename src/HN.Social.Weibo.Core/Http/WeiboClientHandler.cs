@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using HN.Social.Weibo.Models;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
 namespace HN.Social.Weibo.Http
@@ -17,11 +18,31 @@ namespace HN.Social.Weibo.Http
         private readonly WeiboOptions _weiboOptions;
 
         public WeiboClientHandler(
-            SignInManager signInManager,
-            IAccessTokenStorage accessTokenStorage,
-            IOptions<JsonSerializerOptions> serializerOptionsAccessor,
-            IOptions<WeiboOptions> weiboOptionsAccessor)
+            [NotNull] SignInManager signInManager,
+            [NotNull] IAccessTokenStorage accessTokenStorage,
+            [NotNull] IOptions<JsonSerializerOptions> serializerOptionsAccessor,
+            [NotNull] IOptions<WeiboOptions> weiboOptionsAccessor)
         {
+            if (signInManager == null)
+            {
+                throw new ArgumentNullException(nameof(signInManager));
+            }
+
+            if (accessTokenStorage == null)
+            {
+                throw new ArgumentNullException(nameof(accessTokenStorage));
+            }
+
+            if (serializerOptionsAccessor == null)
+            {
+                throw new ArgumentNullException(nameof(serializerOptionsAccessor));
+            }
+
+            if (weiboOptionsAccessor == null)
+            {
+                throw new ArgumentNullException(nameof(weiboOptionsAccessor));
+            }
+
             _signInManager = signInManager;
             _accessTokenStorage = accessTokenStorage;
             _serializerOptions = serializerOptionsAccessor.Value;
