@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 
 namespace HN.Social.Weibo
@@ -14,16 +15,40 @@ namespace HN.Social.Weibo
         private readonly SignInManager _signInManager;
 
         public WeiboClient(
-            IHttpClientFactory httpClientFactory,
-            SignInManager signInManager,
-            IOptions<JsonSerializerOptions> serializerOptionsAccessor)
+            [NotNull] IServiceProvider serviceProvider,
+            [NotNull] IHttpClientFactory httpClientFactory,
+            [NotNull] SignInManager signInManager,
+            [NotNull] IOptions<JsonSerializerOptions> serializerOptionsAccessor)
         {
+            if (serviceProvider == null)
+            {
+                throw new ArgumentNullException(nameof(serviceProvider));
+            }
+
+            if (httpClientFactory == null)
+            {
+                throw new ArgumentNullException(nameof(httpClientFactory));
+            }
+
+            if (signInManager == null)
+            {
+                throw new ArgumentNullException(nameof(signInManager));
+            }
+
+            if (serializerOptionsAccessor == null)
+            {
+                throw new ArgumentNullException(nameof(serializerOptionsAccessor));
+            }
+
+            Services = serviceProvider;
             _httpClientFactory = httpClientFactory;
             _signInManager = signInManager;
             _serializerOptions = serializerOptionsAccessor.Value;
         }
 
         public bool IsSignIn => _signInManager.IsSignIn;
+
+        public IServiceProvider Services { get; }
 
         public long UserId
         {

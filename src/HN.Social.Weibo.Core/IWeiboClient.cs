@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -14,6 +15,11 @@ namespace HN.Social.Weibo
         /// 获取用户是否已登入。
         /// </summary>
         bool IsSignIn { get; }
+
+        /// <summary>
+        /// 获取已注入的服务。
+        /// </summary>
+        IServiceProvider Services { get; }
 
         /// <summary>
         /// 获取已登入用户的用户 Id。
