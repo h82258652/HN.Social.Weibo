@@ -18,7 +18,7 @@ namespace HN.Social.Weibo
         /// <typeparam name="TDbContext">实现 <see cref="IWeiboDbContext" /> 接口的 Entity Framework Core 数据上下文类型。</typeparam>
         /// <param name="builder"><see cref="IWeiboClientBuilder" /> 实例。</param>
         /// <param name="context">Entity Framework Core 数据上下文实例。</param>
-        /// <returns></returns>
+        /// <returns><see cref="IWeiboClientBuilder" /> 实例。</returns>
         public static IWeiboClientBuilder UseEfCoreAccessTokenStorage<TDbContext>([NotNull] this IWeiboClientBuilder builder, [NotNull] TDbContext context) where TDbContext : DbContext, IWeiboDbContext
         {
             if (builder == null)
