@@ -46,6 +46,21 @@ namespace HN.Social.Weibo
         }
 
         /// <summary>
+        /// 使用内存 <see cref="AccessToken" /> 存储。
+        /// </summary>
+        /// <param name="builder"><see cref="IWeiboClientBuilder" /> 实例。</param>
+        /// <returns><see cref="IWeiboClientBuilder" /> 实例。</returns>
+        public static IWeiboClientBuilder UseMemoryAccessTokenStorage([NotNull] this IWeiboClientBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            return builder.UseAccessTokenStorage<MemoryAccessTokenStorage>();
+        }
+
+        /// <summary>
         /// 对 <see cref="IWeiboClientBuilder" /> 进行配置。
         /// </summary>
         /// <param name="builder"><see cref="IWeiboClientBuilder" /> 实例。</param>
@@ -78,10 +93,10 @@ namespace HN.Social.Weibo
         /// <param name="isAutoSignInEnabled">是否在调用微博 API 时自动执行授权操作。默认 <see langword="true" />。</param>
         /// <returns></returns>
         public static IWeiboClientBuilder WithConfig(
-            [NotNull] this IWeiboClientBuilder builder, 
-            [NotNull] string appKey, 
-            [NotNull] string appSecret, 
-            [NotNull] string redirectUri, 
+            [NotNull] this IWeiboClientBuilder builder,
+            [NotNull] string appKey,
+            [NotNull] string appSecret,
+            [NotNull] string redirectUri,
             [CanBeNull] string? scope = null,
             bool isAutoSignInEnabled = true)
         {
