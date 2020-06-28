@@ -89,7 +89,7 @@ namespace HN.Social.Weibo.Models
         /// 性别，m：男、f：女、n：未知。
         /// </summary>
         [JsonPropertyName("gender")]
-        public string Gender { get; set; }
+        public string Gender { get; set; } = default!;
 
         /// <summary>
         /// 粉丝数。
@@ -119,7 +119,7 @@ namespace HN.Social.Weibo.Models
         /// 用户创建（注册）时间。
         /// </summary>
         [JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public string CreatedAt { get; set; } = default!;
 
         /// <summary>
         /// 暂未支持。
@@ -209,6 +209,6 @@ namespace HN.Social.Weibo.Models
         /// 用户当前的语言版本，zh-cn：简体中文，zh-tw：繁体中文，en：英语。
         /// </summary>
         [JsonPropertyName("lang")]
-        public string Lang { get; set; }
+        public string Lang { get; set; } = default!;
     }
 }

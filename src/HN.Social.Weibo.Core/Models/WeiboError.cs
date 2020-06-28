@@ -11,7 +11,7 @@ namespace HN.Social.Weibo.Models
         /// 错误消息。
         /// </summary>
         [JsonPropertyName("error")]
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; } = default!;
 
         /// <summary>
         /// 错误代码。

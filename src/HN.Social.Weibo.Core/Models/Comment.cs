@@ -11,7 +11,7 @@ namespace HN.Social.Weibo.Models
         /// 评论创建时间。
         /// </summary>
         [JsonPropertyName("created_at")]
-        public string CreatedAt { get; set; }
+        public string CreatedAt { get; set; } = default!;
 
         /// <summary>
         /// 评论的ID。
@@ -23,7 +23,7 @@ namespace HN.Social.Weibo.Models
         /// 评论的内容。
         /// </summary>
         [JsonPropertyName("text")]
-        public string Text { get; set; }
+        public string Text { get; set; } = default!;
 
         /// <summary>
         /// 评论的来源。
