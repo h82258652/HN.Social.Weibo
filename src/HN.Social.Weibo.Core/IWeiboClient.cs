@@ -19,6 +19,7 @@ namespace HN.Social.Weibo
         /// <summary>
         /// 获取已注入的服务。
         /// </summary>
+        [NotNull]
         IServiceProvider Services { get; }
 
         /// <summary>
