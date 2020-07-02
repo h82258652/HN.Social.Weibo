@@ -23,6 +23,6 @@ namespace HN.Social.Weibo.Models
         /// 请求地址。
         /// </summary>
         [JsonPropertyName("request")]
-        public string Request { get; set; }
+        public string Request { get; set; } = default!;
     }
 }
