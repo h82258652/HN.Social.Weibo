@@ -19,9 +19,19 @@ namespace HN.Social.Weibo
         /// <param name="context">Entity Framework Core 数据上下文。</param>
         /// <param name="weiboOptionsAccessor"><see cref="WeiboOptions" /> 实例的访问。</param>
         public EfCoreAccessTokenStorage(
-            [NotNull] TDbContext context, 
+            [NotNull] TDbContext context,
             [NotNull] IOptions<WeiboOptions> weiboOptionsAccessor)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (weiboOptionsAccessor == null)
+            {
+                throw new ArgumentNullException(nameof(weiboOptionsAccessor));
+            }
+
             _context = context;
             _weiboOptions = weiboOptionsAccessor.Value;
         }
