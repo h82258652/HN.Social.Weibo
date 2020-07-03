@@ -18,10 +18,25 @@ namespace HN.Social.Weibo
         private readonly WeiboOptions _weiboOptions;
 
         public SignInManager(
-            IAccessTokenStorage accessTokenStorage,
-            IAuthorizationProvider authorizationProvider,
-            IOptions<WeiboOptions> weiboOptionsAccessor)
+            [NotNull] IAccessTokenStorage accessTokenStorage,
+            [NotNull] IAuthorizationProvider authorizationProvider,
+            [NotNull] IOptions<WeiboOptions> weiboOptionsAccessor)
         {
+            if (accessTokenStorage == null)
+            {
+                throw new ArgumentNullException(nameof(accessTokenStorage));
+            }
+
+            if (authorizationProvider == null)
+            {
+                throw new ArgumentNullException(nameof(authorizationProvider));
+            }
+
+            if (weiboOptionsAccessor == null)
+            {
+                throw new ArgumentNullException(nameof(weiboOptionsAccessor));
+            }
+
             _accessTokenStorage = accessTokenStorage;
             _authorizationProvider = authorizationProvider;
             _weiboOptions = weiboOptionsAccessor.Value;
