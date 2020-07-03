@@ -17,7 +17,7 @@ namespace HN.Social.Weibo.Models
         /// 字符串型的用户UID。
         /// </summary>
         [JsonPropertyName("idstr")]
-        public string IdStr { get; set; }
+        public string IdStr { get; set; } = default!;
 
         /// <summary>
         /// 用户昵称。
