@@ -17,6 +17,12 @@ namespace HN.Social.Weibo
         private readonly IAuthorizationProvider _authorizationProvider;
         private readonly WeiboOptions _weiboOptions;
 
+        /// <summary>
+        /// 初始化 <see cref="SignInManager" /> 类的新实例。
+        /// </summary>
+        /// <param name="accessTokenStorage"><see cref="AccessToken" /> 存储。</param>
+        /// <param name="authorizationProvider">授权提供者。</param>
+        /// <param name="weiboOptionsAccessor"><see cref="WeiboOptions" /> 实例的访问。</param>
         public SignInManager(
             [NotNull] IAccessTokenStorage accessTokenStorage,
             [NotNull] IAuthorizationProvider authorizationProvider,
