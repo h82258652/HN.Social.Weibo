@@ -7,6 +7,7 @@
     <authors>h82258652</authors>
     <owners>h82258652</owners>
     <license type="expression">MIT</license>
+    <icon>images\icon.png</icon>
     <projectUrl>https://github.com/h82258652/HN.Social.Weibo</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>HN.Social.Weibo.Desktop</description>
@@ -18,6 +19,7 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="..\..\images\icon.png" target="images\" />
     <file src="bin\Release\HN.Social.Weibo.Desktop.dll" target="lib\net461" />
     <file src="bin\Release\HN.Social.Weibo.Desktop.xml" target="lib\net461" />
     <file src="bin\Release\HN.Social.Weibo.Desktop.pdb" target="lib\net461" />

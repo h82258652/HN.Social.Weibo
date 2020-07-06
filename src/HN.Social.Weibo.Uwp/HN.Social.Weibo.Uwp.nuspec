@@ -7,6 +7,7 @@
     <authors>h82258652</authors>
     <owners>h82258652</owners>
     <license type="expression">MIT</license>
+    <icon>images\icon.png</icon>
     <projectUrl>https://github.com/h82258652/HN.Social.Weibo</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>HN.Social.Weibo.Uwp</description>
@@ -17,6 +18,7 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="..\..\images\icon.png" target="images\" />
     <file src="bin\Release\HN.Social.Weibo.Uwp.dll" target="lib\uap10.0.16299" />
     <file src="bin\Release\HN.Social.Weibo.Uwp.xml" target="lib\uap10.0.16299" />
     <file src="bin\Release\HN.Social.Weibo.Uwp.pri" target="lib\uap10.0.16299" />
