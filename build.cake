@@ -97,20 +97,18 @@ Task("Package")
 });
 
 Task("Publish")
+    .WithCriteria(BuildSystem.IsRunningOnGitHubActions)
     .IsDependentOn("Package")
     .Does(() =>
 {
-    if(BuildSystem.IsRunningOnGitHubActions)
+    var packages = GetFiles("./artifacts/*.nupkg");
+    var nugetApiKey = EnvironmentVariable("NUGET_APIKEY");
+    NuGetPush(packages, new NuGetPushSettings
     {
-        var packages = GetFiles("./artifacts/*.nupkg");
-        var nugetApiKey = EnvironmentVariable("NUGET_APIKEY");
-        NuGetPush(packages, new NuGetPushSettings
-        {
-            Source = "https://www.nuget.org",
-            ApiKey = nugetApiKey,
-            SkipDuplicate = true
-        });
-    }
+        Source = "https://www.nuget.org",
+        ApiKey = nugetApiKey,
+        SkipDuplicate = true
+    });
 });
 
 //////////////////////////////////////////////////////////////////////
