@@ -3,7 +3,9 @@ using System.Text.Json;
 using HN.Social.Weibo.Authorization;
 using HN.Social.Weibo.Extensions;
 using HN.Social.Weibo.Http;
+using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace HN.Social.Weibo
@@ -14,12 +16,25 @@ namespace HN.Social.Weibo
         /// <summary>
         /// 初始化 <see cref="WeiboClientBuilder" /> 类的新实例。
         /// </summary>
-        public WeiboClientBuilder()
+        public WeiboClientBuilder() : this(new ServiceCollection())
         {
-            Services = new ServiceCollection();
+        }
+
+        /// <summary>
+        /// 初始化 <see cref="WeiboClientBuilder" /> 类的新实例。
+        /// </summary>
+        /// <param name="services">服务集合。</param>
+        public WeiboClientBuilder([NotNull] IServiceCollection services)
+        {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            Services = services;
             ConfigureHttpService(Services);
-            Services.AddTransient<SignInManager>();
-            Services.Configure<JsonSerializerOptions>(options =>
+            Services.TryAddTransient<SignInManager>();
+            Services.Configure<JsonSerializerOptions>(Constants.JsonSerializerOptionsConfigureName, options =>
             {
                 options.PropertyNameCaseInsensitive = true;
             });
@@ -52,7 +67,7 @@ namespace HN.Social.Weibo
 
         private void ConfigureHttpService(IServiceCollection services)
         {
-            services.AddTransient<WeiboClientHandler>();
+            services.TryAddTransient<WeiboClientHandler>();
             services.AddHttpClient(Constants.HttpClientName, client =>
             {
                 client.BaseAddress = new Uri(Constants.WeiboApiUrlBase);

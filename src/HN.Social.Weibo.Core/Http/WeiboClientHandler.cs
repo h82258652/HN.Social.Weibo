@@ -20,7 +20,7 @@ namespace HN.Social.Weibo.Http
         public WeiboClientHandler(
             [NotNull] SignInManager signInManager,
             [NotNull] IAccessTokenStorage accessTokenStorage,
-            [NotNull] IOptions<JsonSerializerOptions> serializerOptionsAccessor,
+            [NotNull] IOptionsSnapshot<JsonSerializerOptions> serializerOptionsAccessor,
             [NotNull] IOptions<WeiboOptions> weiboOptionsAccessor)
         {
             if (signInManager == null)
@@ -45,7 +45,7 @@ namespace HN.Social.Weibo.Http
 
             _signInManager = signInManager;
             _accessTokenStorage = accessTokenStorage;
-            _serializerOptions = serializerOptionsAccessor.Value;
+            _serializerOptions = serializerOptionsAccessor.Get(Constants.JsonSerializerOptionsConfigureName);
             _weiboOptions = weiboOptionsAccessor.Value;
         }
 
@@ -63,13 +63,13 @@ namespace HN.Social.Weibo.Http
 
             if (accessToken != null)
             {
-                var uriBuilder = new UriBuilder(request.RequestUri);
+                var uriBuilder = new UriBuilder(request.RequestUri!);
                 var query = HttpUtility.ParseQueryString(uriBuilder.Query);
                 query["access_token"] = accessToken;
                 uriBuilder.Query = query.ToString();
                 request.RequestUri = uriBuilder.Uri;
             }
-            
+
             var response = await base.SendAsync(request, cancellationToken);
 
             if (response.Content is StreamContent streamContent)
@@ -90,7 +90,7 @@ namespace HN.Social.Weibo.Http
             {
                 var json = await response.Content.ReadAsStringAsync();
                 error = JsonSerializer.Deserialize<WeiboError>(json, _serializerOptions);
-                if (error.ErrorCode == Constants.UserRemoveAuthorizationCode)
+                if (error != null && error.ErrorCode == Constants.UserRemoveAuthorizationCode)
                 {
                     await _signInManager.SignOutAsync();
                 }

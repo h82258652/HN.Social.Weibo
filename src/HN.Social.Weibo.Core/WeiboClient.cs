@@ -18,7 +18,7 @@ namespace HN.Social.Weibo
             [NotNull] IServiceProvider serviceProvider,
             [NotNull] IHttpClientFactory httpClientFactory,
             [NotNull] SignInManager signInManager,
-            [NotNull] IOptions<JsonSerializerOptions> serializerOptionsAccessor)
+            [NotNull] IOptionsSnapshot<JsonSerializerOptions> serializerOptionsAccessor)
         {
             if (serviceProvider == null)
             {
@@ -43,7 +43,7 @@ namespace HN.Social.Weibo
             Services = serviceProvider;
             _httpClientFactory = httpClientFactory;
             _signInManager = signInManager;
-            _serializerOptions = serializerOptionsAccessor.Value;
+            _serializerOptions = serializerOptionsAccessor.Get(Constants.JsonSerializerOptionsConfigureName);
         }
 
         public bool IsSignIn => _signInManager.IsSignIn;
@@ -97,7 +97,7 @@ namespace HN.Social.Weibo
             var client = _httpClientFactory.CreateClient(Constants.HttpClientName);
             var response = await client.SendAsync(request, cancellationToken);
             var json = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<T>(json, _serializerOptions);
+            return JsonSerializer.Deserialize<T>(json, _serializerOptions)!;
         }
 
         public Task SignInAsync()

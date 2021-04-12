@@ -106,7 +106,7 @@ namespace HN.Social.Weibo
             var url = $"/statuses/mentions.json?since_id={sinceId}&max_id={maxId}&count={count}&page={page}&filter_by_author={filterByAuthor}&filter_by_source={filterBySource}&filter_by_type={filterByType}";
             return client.GetAsync<StatusList>(url, cancellationToken);
         }
-        
+
         /// <summary>
         /// 根据微博ID获取单条微博内容。
         /// </summary>
@@ -158,13 +158,13 @@ namespace HN.Social.Weibo
                 throw new ArgumentNullException(nameof(client));
             }
 
-            var formData = new Dictionary<string, string>
+            var formData = new List<KeyValuePair<string?, string?>>
             {
-                ["status"] = status
+                new KeyValuePair<string?, string?>("status", status)
             };
             if (rip != null)
             {
-                formData["rip"] = rip;
+                formData.Add(new KeyValuePair<string?, string?>("rip", rip));
             }
 
             var postContent = new FormUrlEncodedContent(formData);

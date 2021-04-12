@@ -11,12 +11,12 @@ namespace HN.Social.Weibo.Models
         /// 类型。
         /// </summary>
         [JsonPropertyName("type")]
-        public string Type { get; set; }
+        public string Type { get; set; } = default!;
 
         /// <summary>
         /// 坐标。
         /// </summary>
         [JsonPropertyName("coordinates")]
-        public double[] Coordinates { get; set; }
+        public double[] Coordinates { get; set; } = default!;
     }
 }

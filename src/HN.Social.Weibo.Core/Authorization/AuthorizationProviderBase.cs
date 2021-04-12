@@ -27,7 +27,7 @@ namespace HN.Social.Weibo.Authorization
         protected AuthorizationProviderBase(
             [NotNull] IHttpClientFactory httpClientFactory,
             [NotNull] IOptions<WeiboOptions> weiboOptionsAccessor,
-            [NotNull] IOptions<JsonSerializerOptions> serializerOptionsAccessor)
+            [NotNull] IOptionsSnapshot<JsonSerializerOptions> serializerOptionsAccessor)
         {
             if (httpClientFactory == null)
             {
@@ -46,7 +46,7 @@ namespace HN.Social.Weibo.Authorization
 
             _httpClientFactory = httpClientFactory;
             _weiboOptions = weiboOptionsAccessor.Value;
-            _serializerOptions = serializerOptionsAccessor.Value;
+            _serializerOptions = serializerOptionsAccessor.Get(Constants.JsonSerializerOptionsConfigureName);
         }
 
         /// <inheritdoc />
@@ -64,13 +64,13 @@ namespace HN.Social.Weibo.Authorization
 
             var authorizationCode = await GetAuthorizationCodeAsync(authorizeUri, callbackUri);
             var client = _httpClientFactory.CreateClient();
-            var formData = new Dictionary<string, string>
+            var formData = new List<KeyValuePair<string?, string?>>
             {
-                ["client_id"] = _weiboOptions.AppKey,
-                ["client_secret"] = _weiboOptions.AppSecret,
-                ["grant_type"] = "authorization_code",
-                ["code"] = authorizationCode,
-                ["redirect_uri"] = _weiboOptions.RedirectUri
+                new KeyValuePair<string?,string?>("client_id",_weiboOptions.AppKey),
+                new KeyValuePair<string?, string?>("client_secret", _weiboOptions.AppSecret),
+                new KeyValuePair<string?, string?>("grant_type", "authorization_code"),
+                new KeyValuePair<string?, string?>("code",  authorizationCode),
+                new KeyValuePair<string?, string?>("redirect_uri",  _weiboOptions.RedirectUri)
             };
 
             var postContent = new FormUrlEncodedContent(formData);
@@ -91,7 +91,7 @@ namespace HN.Social.Weibo.Authorization
                 throw new WeiboApiException(error);
             }
 
-            return JsonSerializer.Deserialize<AuthorizeResult>(json, _serializerOptions);
+            return JsonSerializer.Deserialize<AuthorizeResult>(json, _serializerOptions)!;
         }
 
         /// <summary>

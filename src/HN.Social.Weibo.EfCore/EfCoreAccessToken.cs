@@ -10,21 +10,21 @@ namespace HN.Social.Weibo
     {
         /// <inheritdoc cref="AccessToken.ExpiresAt" />
         public DateTime ExpiresAt { get; set; }
-        
+
         /// <summary>
         /// Id。
         /// </summary>
         public Guid Id { get; set; }
-        
+
         /// <summary>
         /// 拥有该 <see cref="AccessToken" /> 的 AppKey。
         /// </summary>
-        public string OwnerAppKey { get; set; }
+        public string OwnerAppKey { get; set; } = default!;
 
         /// <inheritdoc cref="AccessToken.UserId" />
         public long UserId { get; set; }
 
         /// <inheritdoc cref="AccessToken.Value" />
-        public string Value { get; set; }
+        public string Value { get; set; } = default!;
     }
 }

@@ -2,18 +2,18 @@
 新浪微博 .net API for Desktop and UWP  
 [![Build status](https://github.com/h82258652/HN.Social.Weibo/workflows/CI/badge.svg)](https://github.com/h82258652/HN.Social.Weibo/workflows/CI/badge.svg)
 
-| Package | Nuget | Requirement |
-| - | - | - |
-| HN.Social.Weibo.Core | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Core.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Core) | .Net Standard 2.0 or higher |
-| HN.Social.Weibo.Desktop | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Desktop.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Desktop) | .Net Framework 4.6.1 or higher |
-| HN.Social.Weibo.Uwp | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Uwp.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Uwp) | UWP 16299 or higher |
+| Package                 | Nuget                                                                                                                          | 框架要求                                          |
+| -                       | -                                                                                                                              | -                                                 |
+| HN.Social.Weibo.Core    | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Core.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Core)       | .Net Standard 2.0/.Net Standard 2.1/.Net Core 5.0 |
+| HN.Social.Weibo.Desktop | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Desktop.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Desktop) | .Net Framework 4.6.1/.Net Core 3.1                |
+| HN.Social.Weibo.Uwp     | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Uwp.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Uwp)         | UWP 16299 或以上                                  |
 
 本文档编写于 **2020 年 4 月 1 日**
 
 已封装基本的 API，没有的 API 可使用扩展方法来封装  
 官方 API 参考  
 https://open.weibo.com/wiki/%E5%BE%AE%E5%8D%9AAPI  
-https://open.weibo.com/apps/你的应用Id/privilege  
+https://open.weibo.com/apps/替换为你的应用Id/privilege  
 
 # 使用方法：
 ### 1、初始化
@@ -26,8 +26,9 @@ IWeiboClient client = new WeiboClientBuilder()
         options.RedirectUri = "";// 应用信息 - 高级信息 - OAuth2.0授权设置 - 授权回调页
         options.Scope = "all";// 可选，参考 https://open.weibo.com/wiki/Scope
     })
-    .UseDefaultAuthorizationProvider()// 使用平台默认授权器
-    .UseDefaultAccessTokenStorage()// 使用平台默认 access token 存储
+    .UseDefaultAuthorizationProvider()// 使用当前平台默认授权器（Desktop 使用 Winform 的 WebBrowser，UWP 使用 WebView）
+    .UseMemoryAccessTokenStorage()// 使用内存 access token 存储
+    // .UseDefaultAccessTokenStorage()// 或使用当前平台默认 access token 存储（Desktop 使用独立存储，UWP 使用 PasswordVault）
     .Build();
 ```
 

@@ -11,7 +11,7 @@ namespace HN.Social.Weibo.Models
         /// 微博。
         /// </summary>
         [JsonPropertyName("statuses")]
-        public Status[] Statuses { get; set; }
+        public Status[] Statuses { get; set; } = default!;
 
         /// <summary>
         /// 微博流内的推广微博ID。

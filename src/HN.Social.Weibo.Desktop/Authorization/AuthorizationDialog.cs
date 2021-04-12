@@ -31,7 +31,7 @@ namespace HN.Social.Weibo.Authorization
         /// <summary>
         /// 授权码。
         /// </summary>
-        public string AuthorizationCode
+        public string? AuthorizationCode
         {
             get;
             private set;

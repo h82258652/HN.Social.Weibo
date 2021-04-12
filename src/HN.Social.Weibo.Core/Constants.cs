@@ -1,7 +1,17 @@
-﻿namespace HN.Social.Weibo
+﻿using System.Text.Json;
+
+namespace HN.Social.Weibo
 {
-    internal static class Constants
+    /// <summary>
+    /// 常量。
+    /// </summary>
+    public static class Constants
     {
+        /// <summary>
+        /// <see cref="JsonSerializerOptions" /> 的配置名字。
+        /// </summary>
+        public const string JsonSerializerOptionsConfigureName = "Weibo";
+
         internal const string AccessTokenUrl = "https://api.weibo.com/oauth2/access_token";
 
         internal const string AuthorizeUrl = "https://api.weibo.com/oauth2/authorize";

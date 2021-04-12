@@ -11,7 +11,7 @@ namespace HN.Social.Weibo.Models
         /// 评论。
         /// </summary>
         [JsonPropertyName("comments")]
-        public Comment[] Comments { get; set; }
+        public Comment[] Comments { get; set; } = default!;
 
         /// <summary>
         /// 上一条游标。

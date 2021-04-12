@@ -118,6 +118,15 @@ Task("Publish")
     .Does(() =>
 {
     var packages = GetFiles("./artifacts/*.nupkg");
+    // 暂时不发布 efcore 的包
+    for (var i = packages.Count - 1; i >= 0; i--)
+    {
+        var package = packages.ElementAt(i);
+        if(package.FullPath.Contains("EfCore"))
+        {
+            packages.Remove(package);
+        }
+    }
     var nugetApiKey = EnvironmentVariable("NUGET_APIKEY");
     NuGetPush(packages, new NuGetPushSettings
     {

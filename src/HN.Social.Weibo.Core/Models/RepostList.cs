@@ -11,6 +11,6 @@ namespace HN.Social.Weibo.Models
         /// 微博。
         /// </summary>
         [JsonPropertyName("reposts")]
-        public Status[] Reposts { get; set; }
+        public Status[] Reposts { get; set; } = default!;
     }
 }

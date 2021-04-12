@@ -11,6 +11,6 @@ namespace HN.Social.Weibo.Models
         /// 图片链接。
         /// </summary>
         [JsonPropertyName("thumbnail_pic")]
-        public string ThumbnailPic { get; set; }
+        public string ThumbnailPic { get; set; } = default!;
     }
 }

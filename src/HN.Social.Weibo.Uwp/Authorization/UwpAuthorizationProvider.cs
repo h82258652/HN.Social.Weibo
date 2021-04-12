@@ -21,9 +21,9 @@ namespace HN.Social.Weibo.Authorization
         /// <param name="weiboOptionsAccessor"><see cref="WeiboOptions" /> 实例的访问。</param>
         /// <param name="serializerOptionsAccessor"><see cref="JsonSerializerOptions" /> 实例的访问。</param>
         public UwpAuthorizationProvider(
-            [NotNull] IHttpClientFactory httpClientFactory, 
+            [NotNull] IHttpClientFactory httpClientFactory,
             [NotNull] IOptions<WeiboOptions> weiboOptionsAccessor,
-            [NotNull] IOptions<JsonSerializerOptions> serializerOptionsAccessor) 
+            [NotNull] IOptionsSnapshot<JsonSerializerOptions> serializerOptionsAccessor)
             : base(httpClientFactory, weiboOptionsAccessor, serializerOptionsAccessor)
         {
         }

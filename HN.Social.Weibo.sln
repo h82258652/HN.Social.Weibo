@@ -12,9 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		build.ps1 = build.ps1
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HN.Social.Weibo.Desktop", "src\HN.Social.Weibo.Desktop\HN.Social.Weibo.Desktop.csproj", "{89915CC1-39C3-46DE-84FB-14C30FEDB50C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HN.Social.Weibo.Desktop", "src\HN.Social.Weibo.Desktop\HN.Social.Weibo.Desktop.csproj", "{89915CC1-39C3-46DE-84FB-14C30FEDB50C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HN.Social.Weibo.Uwp", "src\HN.Social.Weibo.Uwp\HN.Social.Weibo.Uwp.csproj", "{B7BB63F2-05FB-4369-8391-96204868F7EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HN.Social.Weibo.Uwp", "src\HN.Social.Weibo.Uwp\HN.Social.Weibo.Uwp.csproj", "{B7BB63F2-05FB-4369-8391-96204868F7EC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{E6B7C35B-EEDF-4AE9-ACC6-F98180249448}"
 EndProject
@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UwpDemo", "demo\UwpDemo\Uwp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{369CBFF0-A338-4ADF-A945-4A3E73E9E1DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HN.Social.Weibo.EfCore", "src\HN.Social.Weibo.EfCore\HN.Social.Weibo.EfCore.csproj", "{559CC07A-1A29-49A6-AB2D-36A09EC217ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HN.Social.Weibo.EfCore", "src\HN.Social.Weibo.EfCore\HN.Social.Weibo.EfCore.csproj", "{559CC07A-1A29-49A6-AB2D-36A09EC217ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

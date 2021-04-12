@@ -23,67 +23,67 @@ namespace HN.Social.Weibo.Models
         /// 用户昵称。
         /// </summary>
         [JsonPropertyName("screen_name")]
-        public string ScreenName { get; set; }
+        public string ScreenName { get; set; } = default!;
 
         /// <summary>
         /// 友好显示名称。
         /// </summary>
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>
         /// 用户所在省级ID。
         /// </summary>
         [JsonPropertyName("province")]
-        public string Province { get; set; }
+        public string Province { get; set; } = default!;
 
         /// <summary>
         /// 用户所在城市ID。
         /// </summary>
         [JsonPropertyName("city")]
-        public string City { get; set; }
+        public string City { get; set; } = default!;
 
         /// <summary>
         /// 用户所在地。
         /// </summary>
         [JsonPropertyName("location")]
-        public string Location { get; set; }
+        public string Location { get; set; } = default!;
 
         /// <summary>
         /// 用户个人描述。
         /// </summary>
         [JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string Description { get; set; } = default!;
 
         /// <summary>
         /// 用户博客地址。
         /// </summary>
         [JsonPropertyName("url")]
-        public string Url { get; set; }
+        public string Url { get; set; } = default!;
 
         /// <summary>
         /// 用户头像地址（中图），50×50像素。
         /// </summary>
         [JsonPropertyName("profile_image_url")]
-        public string ProfileImageUrl { get; set; }
+        public string ProfileImageUrl { get; set; } = default!;
 
         /// <summary>
         /// 用户的微博统一URL地址。
         /// </summary>
         [JsonPropertyName("profile_url")]
-        public string ProfileUrl { get; set; }
+        public string ProfileUrl { get; set; } = default!;
 
         /// <summary>
         /// 用户的个性化域名。
         /// </summary>
         [JsonPropertyName("domain")]
-        public string Domain { get; set; }
+        public string Domain { get; set; } = default!;
 
         /// <summary>
         /// 用户的微号。
         /// </summary>
         [JsonPropertyName("weihao")]
-        public string Weihao { get; set; }
+        public string Weihao { get; set; } = default!;
 
         /// <summary>
         /// 性别，m：男、f：女、n：未知。
@@ -155,13 +155,13 @@ namespace HN.Social.Weibo.Models
         /// 用户备注信息，只有在查询用户关系时才返回此字段。
         /// </summary>
         [JsonPropertyName("remark")]
-        public string Remark { get; set; }
+        public string Remark { get; set; } = default!;
 
         /// <summary>
         /// 用户的最近一条微博信息字段。
         /// </summary>
         [JsonPropertyName("status")]
-        public Status Status { get; set; }
+        public Status? Status { get; set; }
 
         /// <summary>
         /// 是否允许所有人对我的微博进行评论，true：是，false：否。
@@ -173,19 +173,19 @@ namespace HN.Social.Weibo.Models
         /// 用户头像地址（大图），180×180像素。
         /// </summary>
         [JsonPropertyName("avatar_large")]
-        public string AvatarLarge { get; set; }
+        public string AvatarLarge { get; set; } = default!;
 
         /// <summary>
         /// 用户头像地址（高清），高清头像原图。
         /// </summary>
         [JsonPropertyName("avatar_hd")]
-        public string AvatarHd { get; set; }
+        public string AvatarHd { get; set; } = default!;
 
         /// <summary>
         /// 认证原因。
         /// </summary>
         [JsonPropertyName("verified_reason")]
-        public string VerifiedReason { get; set; }
+        public string VerifiedReason { get; set; } = default!;
 
         /// <summary>
         /// 该用户是否关注当前登录用户，true：是，false：否。

@@ -164,15 +164,15 @@ namespace HN.Social.Weibo
                 throw new ArgumentNullException(nameof(client));
             }
 
-            var formData = new Dictionary<string, string>
+            var formData = new List<KeyValuePair<string?, string?>>
             {
-                ["comment"] = comment,
-                ["id"] = id.ToString(),
-                ["comment_ori"] = commentOri.ToString()
+                new KeyValuePair<string?, string?>("comment", comment),
+                new KeyValuePair<string?, string?>("id", id.ToString()),
+                new KeyValuePair<string?, string?>("comment_ori", commentOri.ToString())
             };
             if (rip != null)
             {
-                formData["rip"] = rip;
+                formData.Add(new KeyValuePair<string?, string?>("rip", rip));
             }
             var postContent = new FormUrlEncodedContent(formData);
             const string url = "/comments/create.json";
@@ -193,9 +193,9 @@ namespace HN.Social.Weibo
                 throw new ArgumentNullException(nameof(client));
             }
 
-            var formData = new Dictionary<string, string>
+            var formData = new List<KeyValuePair<string?, string?>>
             {
-                ["cid"] = cid.ToString()
+                new KeyValuePair<string?, string?>("cid", cid.ToString())
             };
             var postContent = new FormUrlEncodedContent(formData);
             const string url = "/comments/destroy.json";
@@ -216,9 +216,9 @@ namespace HN.Social.Weibo
                 throw new ArgumentNullException(nameof(client));
             }
 
-            var formData = new Dictionary<string, string>
+            var formData = new List<KeyValuePair<string?, string?>>
             {
-                ["cids"] = string.Join(",", cids)
+                new KeyValuePair<string?, string?>("cids", string.Join(",", cids))
             };
             var postContent = new FormUrlEncodedContent(formData);
             const string url = "/comments/destroy_batch.json";
@@ -244,17 +244,17 @@ namespace HN.Social.Weibo
                 throw new ArgumentNullException(nameof(client));
             }
 
-            var formData = new Dictionary<string, string>
+            var formData = new List<KeyValuePair<string?, string?>>
             {
-                ["cid"] = cid.ToString(),
-                ["id"] = id.ToString(),
-                ["comment"] = comment,
-                ["without_mention"] = withoutMention.ToString(),
-                ["comment_ori"] = commentOri.ToString()
+                new KeyValuePair<string?, string?>("cid", cid.ToString()),
+                new KeyValuePair<string?, string?>("id", id.ToString()),
+                new KeyValuePair<string?, string?>("comment", comment),
+                new KeyValuePair<string?, string?>("without_mention", withoutMention.ToString()),
+                new KeyValuePair<string?, string?>("comment_ori", commentOri.ToString())
             };
             if (rip != null)
             {
-                formData["rip"] = rip;
+                formData.Add(new KeyValuePair<string?, string?>("rip", rip));
             }
             var postContent = new FormUrlEncodedContent(formData);
             const string url = "/comments/reply.json";
