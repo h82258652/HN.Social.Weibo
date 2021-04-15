@@ -2,11 +2,11 @@
 新浪微博 .net API for Desktop and UWP  
 [![Build status](https://github.com/h82258652/HN.Social.Weibo/workflows/CI/badge.svg)](https://github.com/h82258652/HN.Social.Weibo/workflows/CI/badge.svg)
 
-| Package                 | Nuget                                                                                                                          | 框架要求                                          |
-| -                       | -                                                                                                                              | -                                                 |
-| HN.Social.Weibo.Core    | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Core.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Core)       | .Net Standard 2.0/.Net Standard 2.1/.Net Core 5.0 |
-| HN.Social.Weibo.Desktop | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Desktop.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Desktop) | .Net Framework 4.6.1/.Net Core 3.1                |
-| HN.Social.Weibo.Uwp     | [![Nuget](https://img.shields.io/nuget/v/HN.Social.Weibo.Uwp.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Uwp)         | UWP 16299 或以上                                  |
+| Package                 | Nuget                                                                                                                                            | 框架要求                                          |
+| -                       | -                                                                                                                                                | -                                                 |
+| HN.Social.Weibo.Core    | [![HN.Social.Weibo.Core](https://img.shields.io/nuget/v/HN.Social.Weibo.Core.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Core)          | .Net Standard 2.0/.Net Standard 2.1/.Net Core 5.0 |
+| HN.Social.Weibo.Desktop | [![HN.Social.Weibo.Desktop](https://img.shields.io/nuget/v/HN.Social.Weibo.Desktop.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Desktop) | .Net Framework 4.6.1/.Net Core 3.1                |
+| HN.Social.Weibo.Uwp     | [![HN.Social.Weibo.Uwp](https://img.shields.io/nuget/v/HN.Social.Weibo.Uwp.svg)](https://www.nuget.org/packages/HN.Social.Weibo.Uwp)             | UWP 16299 或以上                                  |
 
 本文档编写于 **2020 年 4 月 1 日**
 
