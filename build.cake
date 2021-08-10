@@ -83,7 +83,7 @@ Task("Test")
 {
     var settings = new DotNetCoreTestSettings
     {
-        Configuration = "Release"
+        Configuration = configuration
     };
 
     var testProjects = GetFiles("./test/**/*.csproj");
@@ -105,6 +105,10 @@ Task("Package")
         {
             Type = "git",
             Url = "https://github.com/h82258652/HN.Social.Weibo"
+        },
+        Properties = new Dictionary<string, string>
+        {
+            ["Configuration"] = configuration
         }
     };
 

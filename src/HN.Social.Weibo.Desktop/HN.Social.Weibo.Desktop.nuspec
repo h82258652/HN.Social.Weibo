@@ -26,11 +26,11 @@
   </metadata>
   <files>
     <file src="..\..\images\icon.png" target="images\" />
-    <file src="bin\Release\net461\HN.Social.Weibo.Desktop.dll" target="lib\net461" />
-    <file src="bin\Release\net461\HN.Social.Weibo.Desktop.xml" target="lib\net461" />
-    <file src="bin\Release\net461\HN.Social.Weibo.Desktop.pdb" target="lib\net461" />
-    <file src="bin\Release\netcoreapp3.1\HN.Social.Weibo.Desktop.dll" target="lib\netcoreapp3.1" />
-    <file src="bin\Release\netcoreapp3.1\HN.Social.Weibo.Desktop.xml" target="lib\netcoreapp3.1" />
-    <file src="bin\Release\netcoreapp3.1\HN.Social.Weibo.Desktop.pdb" target="lib\netcoreapp3.1" />
+    <file src="bin\$configuration$\net461\HN.Social.Weibo.Desktop.dll" target="lib\net461" />
+    <file src="bin\$configuration$\net461\HN.Social.Weibo.Desktop.xml" target="lib\net461" />
+    <file src="bin\$configuration$\net461\HN.Social.Weibo.Desktop.pdb" target="lib\net461" />
+    <file src="bin\$configuration$\netcoreapp3.1\HN.Social.Weibo.Desktop.dll" target="lib\netcoreapp3.1" />
+    <file src="bin\$configuration$\netcoreapp3.1\HN.Social.Weibo.Desktop.xml" target="lib\netcoreapp3.1" />
+    <file src="bin\$configuration$\netcoreapp3.1\HN.Social.Weibo.Desktop.pdb" target="lib\netcoreapp3.1" />
   </files>
 </package>

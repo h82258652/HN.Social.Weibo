@@ -21,9 +21,9 @@
   </metadata>
   <files>
     <file src="..\..\images\icon.png" target="images\" />
-    <file src="bin\Release\uap10.0.16299\HN.Social.Weibo.Uwp.dll" target="lib\uap10.0.16299" />
-    <file src="bin\Release\uap10.0.16299\HN.Social.Weibo.Uwp.xml" target="lib\uap10.0.16299" />
-    <file src="bin\Release\uap10.0.16299\HN.Social.Weibo.Uwp.pri" target="lib\uap10.0.16299" />
-    <file src="bin\Release\uap10.0.16299\HN.Social.Weibo.Uwp.pdb" target="lib\uap10.0.16299" />
+    <file src="bin\$configuration$\uap10.0.16299\HN.Social.Weibo.Uwp.dll" target="lib\uap10.0.16299" />
+    <file src="bin\$configuration$\uap10.0.16299\HN.Social.Weibo.Uwp.xml" target="lib\uap10.0.16299" />
+    <file src="bin\$configuration$\uap10.0.16299\HN.Social.Weibo.Uwp.pri" target="lib\uap10.0.16299" />
+    <file src="bin\$configuration$\uap10.0.16299\HN.Social.Weibo.Uwp.pdb" target="lib\uap10.0.16299" />
   </files>
 </package>
